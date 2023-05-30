@@ -48,6 +48,7 @@ function App() {
       <Routes></Routes>
     </div>
   );
+  return <div className="App"></div>;
 }
 
 export default App;
