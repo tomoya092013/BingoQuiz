@@ -38,7 +38,6 @@ function App() {
           path="/admin/guestAnswerList/correctAnswerRate"
           element={<CorrectAnswerRate />}
         />
-        {/* </Route> */}
         <Route path="/guest">
           <Route path="bingoSheet" element={<BingoSheet />} />
           <Route path="questionList" element={<QuestionList />} />
@@ -48,7 +47,6 @@ function App() {
       <Routes></Routes>
     </div>
   );
-  return <div className="App"></div>;
 }
 
 export default App;
