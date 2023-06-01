@@ -1,6 +1,8 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
+import { Box, Stack } from '@mui/material';
+
 import AdminIndex from './components/Admin/Admin';
 import AddAnswer from './components/Admin/CorrectAnswerList/AddAnswer';
 import CorrectAnswerList from './components/Admin/CorrectAnswerList/CorrectAnswerList';
@@ -15,7 +17,7 @@ import LoginForm from './components/Login/LoginForm';
 
 function App() {
   return (
-    <div>
+    <>
       <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="/admin" element={<AdminIndex />} />
@@ -45,7 +47,7 @@ function App() {
         </Route>
       </Routes>
       <Routes></Routes>
-    </div>
+    </>
   );
 }
 
