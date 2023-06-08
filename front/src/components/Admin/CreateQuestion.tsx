@@ -63,9 +63,7 @@ const CreateQuestion = () => {
     );
   };
 
-
   const createQuestion = async() => {
-    const newChoiceList: Choice[]= []
     const requestQuestion= {
       questions: {
         title: quizTitle,
@@ -85,24 +83,25 @@ const CreateQuestion = () => {
     // console.log(data)
 
     // eslint-disable-next-line array-callback-return
-    choiceList.map((choice,id)=>{
-      const newChoice:Choice = {
+    const newChoiceList: Choice[]= choiceList.map((choice, id) => {
+      return {
         question_id: questionId,
         mark: MARK[id],
         content: choice
       }
-      newChoiceList.push(newChoice)
     })
     
-    const requestChoice = {
-      choice: {newChoiceList}
-    }
+    // const requestChoice = {
+    //   choice: newChoiceList 
+      
+    // }
+    
     const choiceRes = await fetch(`http://localhost:3001/questions/${questionId}/choices`, {
       method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(requestChoice)
+        body: JSON.stringify({newChoiceList})
     })
     const resultChoice = await choiceRes.json();
     console.log(resultChoice);
