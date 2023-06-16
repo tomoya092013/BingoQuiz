@@ -8,10 +8,10 @@ const Admin = () => {
     <>
       <List>
         <ListItem>
-          <Link to="/admin/createQuestion">問題作成</Link>
+          <Link to="/admin/createQuiz">問題作成</Link>
         </ListItem>
         <ListItem>
-          <Link to="/admin/questionList">問題一覧</Link>
+          <Link to="/admin/quizList">問題一覧</Link>
         </ListItem>
       </List>
     </>

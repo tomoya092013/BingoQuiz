@@ -1,18 +1,14 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 
-import { Box, Stack } from '@mui/material';
-
 import AdminIndex from './components/Admin/Admin';
-import AddAnswer from './components/Admin/CorrectAnswerList/AddAnswer';
-import CorrectAnswerList from './components/Admin/CorrectAnswerList/CorrectAnswerList';
-import CreateQuestion from './components/Admin/CreateQuestion';
+import CreateQuiz from './components/Admin/CreateQuiz';
 import BingoList from './components/Admin/GuestAcswerList/BingoList';
 import CorrectAnswerRate from './components/Admin/GuestAcswerList/CorrectAnswerRate';
 import GuestAnswerList from './components/Admin/GuestAcswerList/GuestAnswerList';
-import QuestionList from './components/Admin/QuestionList';
-import BingoSheet from './components/Guest/BingoSheet';
+import QuizList from './components/Admin/QuizList';
 import SelectAnswer from './components/Guest/SelectAnswer';
+import BingoSheet from './components/Guest/BingoSheet/BingoSheet';
 import LoginForm from './components/Login/LoginForm';
 
 function App() {
@@ -21,16 +17,8 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginForm />} />
         <Route path="/admin" element={<AdminIndex />} />
-        <Route path="/admin/createQuestion" element={<CreateQuestion />} />
-        <Route path="/admin/questionList" element={<QuestionList />} />
-        <Route
-          path="/admin/correctAnswerList"
-          element={<CorrectAnswerList />}
-        />
-        <Route
-          path="/admin/correctAnswerList/addAnswer"
-          element={<AddAnswer />}
-        />
+        <Route path="/admin/createQuiz" element={<CreateQuiz />} />
+        <Route path="/admin/quizList" element={<QuizList />} />
         <Route path="/admin/guestAnswerList" element={<GuestAnswerList />} />
         <Route
           path="/admin/guestAnswerList/bingoList"
@@ -40,9 +28,9 @@ function App() {
           path="/admin/guestAnswerList/correctAnswerRate"
           element={<CorrectAnswerRate />}
         />
-        <Route path="/guest">
+        <Route path="/guest/:id">
           <Route path="bingoSheet" element={<BingoSheet />} />
-          <Route path="questionList" element={<QuestionList />} />
+          <Route path="quizList" element={<QuizList />} />
           <Route path="selectAnswer" element={<SelectAnswer />} />
         </Route>
       </Routes>
