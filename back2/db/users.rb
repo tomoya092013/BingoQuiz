@@ -1,1 +1,0 @@
-$users = [{name:"Guest1", id:"123"}, {name:"Guest2", id:"456"}]
