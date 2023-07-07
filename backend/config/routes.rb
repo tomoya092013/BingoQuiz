@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   get "login/:id" => "login#index"
 
+  mount ActionCable.server => '/cable'
+
   resources :quizzes, only: [:index, :show,:create, :update, :destroy] do
     resources :choices, only: [:index, :show, :create, :update]
   end

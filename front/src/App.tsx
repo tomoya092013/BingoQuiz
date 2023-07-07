@@ -10,6 +10,7 @@ import QuizList from './components/Admin/QuizList';
 import SelectAnswer from './components/Guest/SelectAnswer';
 import BingoSheet from './components/Guest/BingoSheet/BingoSheet';
 import LoginForm from './components/Login/LoginForm';
+import { ChatConnection } from './components/ChatConnection/ChatConnection';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
           <Route path="quizList" element={<QuizList />} />
           <Route path="selectAnswer" element={<SelectAnswer />} />
         </Route>
+        <Route path="chatConnection" element={<ChatConnection />} />
       </Routes>
       <Routes></Routes>
     </>

@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    tty: true
+    volumes:
+      - ./:/workspace
+    depends_on:
+      - redis
+  redis:
+    image: 'redis:latest'
+    ports:
+      - '6379:6379'
+    volumes:
+      - './data/redis:/data'
