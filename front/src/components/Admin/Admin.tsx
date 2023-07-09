@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import { List, ListItem } from '@mui/material';
 
 const Admin = () => {

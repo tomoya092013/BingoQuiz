@@ -6,9 +6,8 @@ class QuizzesController < ApplicationController
 
   def show
     @quiz = Quiz.find(params[:id])
-    @choices = @quiz.choices
     
-    render json: {quiz:@quiz, choices:@choices}
+    render json: {quiz:@quiz}
   end
 
   def create
@@ -30,6 +29,6 @@ class QuizzesController < ApplicationController
   private
 
   def quiz_params
-    params.require(:quiz).permit(:no,:content, :correct_mark, :is_answer_opened)
+    params.require(:quiz).permit(:question_title, :option_a, :option_b, :option_c, :correct_mark, :is_answer_opened)
   end
 end
