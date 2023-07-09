@@ -5,7 +5,8 @@ class ChatChannel < ApplicationCable::Channel
     puts '購読成功'
   end
  
-  def broadcast_message
+  def broadcast_message(data)
+    puts data
     puts '通信成功'
     channel = "chat_channel_#{params[:chat_id]}"
  

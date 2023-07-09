@@ -37,6 +37,7 @@ Rails.application.configure do
   # config.action_cable.mount_path = nil
   # config.action_cable.url = "wss://example.com/cable"
   config.action_cable.allowed_request_origins = [ "http://localhost:3000"]
+  # config.session_store :redis_store, servers: 'redis://localhost:6379/0', expire_in: 1.day
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
