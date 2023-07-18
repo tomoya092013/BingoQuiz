@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Quiz } from '../../../types';
 import {
   Box,
@@ -15,11 +15,64 @@ import {
 } from '@mui/material';
 
 const EditQuiz = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [editQuiz, setEditQuiz] = useState<Quiz | null>(null);
+  const [questionTitle, setQuestionTitle] = useState('');
+  const [selectRadio, setSelectRadio] = useState<string | null>('A');
+  const [option_A, setOption_A] = useState('');
+  const [option_B, setOption_B] = useState('');
+  const [option_C, setOption_C] = useState('');
+
+  const handleChangeRadioButton = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectRadio(e.target.value);
+  };
+  const handleChangeTitle = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {};
+  const handleChangeOptionA = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setOption_A(e.target.value);
+  };
+  const handleChangeOptionB = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setOption_B(e.target.value);
+  };
+  const handleChangeOptionC = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    setOption_C(e.target.value);
+  };
+
+  const updateQuiz = async (id: number) => {
+    const data = {
+      question_title: questionTitle,
+      option_a: option_A,
+      option_b: option_B,
+      option_c: option_C,
+      correct_mark: selectRadio,
+    };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const res = await fetch(`http://localhost:3001/quizzes/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(data),
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    });
+    navigate('/');
+  };
 
   useEffect(() => {
     setEditQuiz(location.state.quiz);
+    setQuestionTitle(location.state.quiz.question_title);
+    setSelectRadio(location.state.quiz.correct_mark);
+    setOption_A(location.state.quiz.option_a);
+    setOption_B(location.state.quiz.option_b);
+    setOption_C(location.state.quiz.option_c);
   }, []);
 
   return (
@@ -32,21 +85,21 @@ const EditQuiz = () => {
           spacing={3}
           width="100%"
           minHeight="100vh"
-          sx={{ backgroundColor: 'red' }}
+          sx={{ backgroundColor: '#eaffce' }}
         >
           <Card
             raised
             sx={{
               width: '70%',
-              minHeight: '80vh',
+              minHeight: '50vh',
               maxWidth: '600px',
               p: 2,
             }}
           >
             <Stack direction="row" justifyContent="center" alignItems="center">
-              <CardHeader title="問題作成" pb="0px" />
+              <CardHeader title="問題編集" pb="0px" />
               <Button>
-                <Link to="/admin/quizList">戻る</Link>
+                <Link to="/">戻る</Link>
               </Button>
             </Stack>
 
@@ -59,49 +112,81 @@ const EditQuiz = () => {
                     fullWidth
                     multiline
                     maxRows={2}
-                    // onChange={(e) => handleTitleChange(e)}
-                    // value={quizContent}
-                  />
-                </Stack>
-              </Grid>
-              <Grid item xs={12}>
-                <Stack
-                  direction="row"
-                  alignItems="baseline"
-                  justifyContent="center"
-                  px="10px"
-                  pb="5px"
-                >
-                  <TextField
-                    label="選択肢"
-                    variant="standard"
-                    fullWidth
-                    // value={choice}
-                    inputProps={{
-                      maxLength: 13,
-                    }}
-                    // onChange={(e) => handleChange(e)}
+                    value={questionTitle}
+                    onChange={(e) => handleChangeTitle(e)}
                   />
                 </Stack>
               </Grid>
               <Grid container ml="20px" mt="10px" spacing={1}>
-                <Typography color="text.secondary" variant="caption" ml="10px">
-                  選択したものが答えになります
-                </Typography>
-                {/* {choiceList.map((_choice, id) => ( */}
-                {/* <Grid item xs={12} key={id}> */}
-                <Stack direction="row" alignItems="center">
-                  <Radio
-                  // value={MARK[id]}
-                  // checked={selectRadio === MARK[id]}
-                  // onChange={(e) => handleChangeRadioButton(e)}
-                  />
-                  {/* <Box>{MARK[id]}.</Box>
-                <Box ml="5px">{choiceList[id]}</Box> */}
+                <Grid item xs={12}>
+                  <Typography
+                    color="text.secondary"
+                    variant="caption"
+                    ml="10px"
+                  >
+                    選択したものが答えになります
+                  </Typography>
+                </Grid>
+                <Stack
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  spacing={3}
+                  width="100%"
+                >
+                  <Stack direction="row" alignItems="center" width="100%">
+                    <Radio
+                      value="A"
+                      checked={selectRadio === 'A'}
+                      onChange={(e) => handleChangeRadioButton(e)}
+                    />
+                    <Box>A.</Box>
+                    <TextField
+                      sx={{ ml: '5px', p: '10px' }}
+                      id="standard-basic"
+                      fullWidth
+                      variant="standard"
+                      value={option_A}
+                      onChange={(e) => handleChangeOptionA(e)}
+                    />
+                  </Stack>
+                  <Stack direction="row" alignItems="center" width="100%">
+                    <Radio
+                      value="B"
+                      checked={selectRadio === 'B'}
+                      onChange={(e) => handleChangeRadioButton(e)}
+                    />
+                    <Box>B.</Box>
+                    <TextField
+                      sx={{ ml: '5px', p: '10px' }}
+                      id="standard-basic"
+                      variant="standard"
+                      fullWidth
+                      value={option_B}
+                      onChange={(e) => {
+                        handleChangeOptionB(e);
+                      }}
+                    />
+                  </Stack>
+                  <Stack direction="row" alignItems="center" width="100%">
+                    <Radio
+                      value="C"
+                      checked={selectRadio === 'C'}
+                      onChange={(e) => handleChangeRadioButton(e)}
+                    />
+                    <Box>C.</Box>
+                    <TextField
+                      sx={{ ml: '5px', p: '10px' }}
+                      id="standard-basic"
+                      variant="standard"
+                      fullWidth
+                      value={option_C}
+                      onChange={(e) => {
+                        handleChangeOptionC(e);
+                      }}
+                    />
+                  </Stack>
                 </Stack>
               </Grid>
-              {/* ))} */}
-              {/* </Grid> */}
 
               <CardActions>
                 <Stack
@@ -114,8 +199,7 @@ const EditQuiz = () => {
                     variant="contained"
                     size="medium"
                     sx={{ width: '110px' }}
-                    // disabled={choiceList.length < 2 || selectRadio === null}
-                    // onClick={() => createQuiz()}
+                    onClick={() => updateQuiz(editQuiz.id)}
                   >
                     編集完了
                   </Button>

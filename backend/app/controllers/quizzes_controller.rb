@@ -17,6 +17,8 @@ class QuizzesController < ApplicationController
   end
 
   def update
+    @quiz = Quiz.find(params[:id])
+    @quiz.update(quiz_params)
 
   end
 
@@ -29,6 +31,7 @@ class QuizzesController < ApplicationController
   private
 
   def quiz_params
-    params.require(:quiz).permit(:question_title, :option_a, :option_b, :option_c, :correct_mark, :is_answer_opened)
+    params.require(:quiz).permit(:question_title, :option_a, :option_b, :option_c, :correct_mark, :is_answer_opened,:created_at,
+    :updated_at)
   end
 end

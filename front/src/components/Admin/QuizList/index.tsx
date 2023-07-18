@@ -21,7 +21,7 @@ const QuizList = () => {
   };
 
   const navigateEditQuiz = (id: number) => {
-    navigate(`/admin/editQuiz/${id}`, {state: { quiz: quizList[id-1]}});
+    navigate(`/admin/editQuiz/${id}`, { state: { quiz: quizList[id - 1] } });
   };
 
   return (
@@ -38,7 +38,7 @@ const QuizList = () => {
           Loading...
         </Stack>
       ) : (
-      <>
+        <>
           <Grid
             container
             direction="row"
@@ -48,7 +48,7 @@ const QuizList = () => {
               backgroundColor: '#eaffce',
             }}
           >
-            <Box padding={5} marginTop={5}>
+            <Box sx={{ p: 10, mt: 5 }}>
               <Grid
                 container
                 direction="row"
@@ -56,19 +56,16 @@ const QuizList = () => {
                 alignItems="center"
               >
                 <Typography variant="h4">問題一覧</Typography>
-                <Button>
-                  <Link to="/admin">戻る</Link>
-                </Button>
               </Grid>
               <Grid
-                  container
-                  direction="row"
-                  alignItems="center"
-                  justifyContent="center"
-                  spacing={3}
-                  marginTop={2}
-                >
-              {quizList.map((quiz) => (
+                container
+                direction="row"
+                alignItems="center"
+                justifyContent="center"
+                spacing={3}
+                marginTop={2}
+              >
+                {quizList.map((quiz) => (
                   <Grid key={quiz.id} item xs={10} md={4}>
                     <Paper
                       elevation={24}
@@ -83,14 +80,26 @@ const QuizList = () => {
                       }}
                       onClick={() => navigateEditQuiz(quiz.id)}
                     >
-                      <Typography variant="h6" gutterBottom sx={{ paddingLeft: 1 }}>{quiz.question_title}</Typography>
-                      <Typography variant="subtitle1"  sx={{ paddingLeft: 2 }}>A. {quiz.option_a}</Typography>
-                      <Typography variant="subtitle1"  sx={{ paddingLeft: 2 }}>B. {quiz.option_b}</Typography>
-                      <Typography variant="subtitle1"  sx={{ paddingLeft: 2 }}>C. {quiz.option_c}</Typography>
+                      <Typography
+                        variant="h6"
+                        gutterBottom
+                        sx={{ paddingLeft: 1 }}
+                      >
+                        {quiz.question_title}
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ paddingLeft: 2 }}>
+                        A. {quiz.option_a}
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ paddingLeft: 2 }}>
+                        B. {quiz.option_b}
+                      </Typography>
+                      <Typography variant="subtitle1" sx={{ paddingLeft: 2 }}>
+                        C. {quiz.option_c}
+                      </Typography>
                     </Paper>
                   </Grid>
-              ))}
-                </Grid>
+                ))}
+              </Grid>
             </Box>
           </Grid>
         </>
