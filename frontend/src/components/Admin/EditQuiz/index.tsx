@@ -24,28 +24,6 @@ const EditQuiz = () => {
   const [option_B, setOption_B] = useState('');
   const [option_C, setOption_C] = useState('');
 
-  const handleChangeRadioButton = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectRadio(e.target.value);
-  };
-  const handleChangeTitle = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {};
-  const handleChangeOptionA = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setOption_A(e.target.value);
-  };
-  const handleChangeOptionB = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setOption_B(e.target.value);
-  };
-  const handleChangeOptionC = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setOption_C(e.target.value);
-  };
-
   const updateQuiz = async (id: number) => {
     const data = {
       question_title: questionTitle,
@@ -55,7 +33,7 @@ const EditQuiz = () => {
       correct_mark: selectRadio,
     };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const res = await fetch(`http://localhost:3001/quizzes/${id}`, {
+    const res = await fetch(`http://localhost:3000/quizzes/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: {
@@ -73,7 +51,7 @@ const EditQuiz = () => {
     setOption_A(location.state.quiz.option_a);
     setOption_B(location.state.quiz.option_b);
     setOption_C(location.state.quiz.option_c);
-  }, []);
+  }, [location.state.quiz]);
 
   return (
     <>
@@ -113,7 +91,7 @@ const EditQuiz = () => {
                     multiline
                     maxRows={2}
                     value={questionTitle}
-                    onChange={(e) => handleChangeTitle(e)}
+                    onChange={(e) => setQuestionTitle(e.target.value)}
                   />
                 </Stack>
               </Grid>
@@ -137,7 +115,7 @@ const EditQuiz = () => {
                     <Radio
                       value="A"
                       checked={selectRadio === 'A'}
-                      onChange={(e) => handleChangeRadioButton(e)}
+                      onChange={(e) => setSelectRadio(e.target.value)}
                     />
                     <Box>A.</Box>
                     <TextField
@@ -146,14 +124,14 @@ const EditQuiz = () => {
                       fullWidth
                       variant="standard"
                       value={option_A}
-                      onChange={(e) => handleChangeOptionA(e)}
+                      onChange={(e) => setOption_A(e.target.value)}
                     />
                   </Stack>
                   <Stack direction="row" alignItems="center" width="100%">
                     <Radio
                       value="B"
                       checked={selectRadio === 'B'}
-                      onChange={(e) => handleChangeRadioButton(e)}
+                      onChange={(e) => setSelectRadio(e.target.value)}
                     />
                     <Box>B.</Box>
                     <TextField
@@ -163,7 +141,7 @@ const EditQuiz = () => {
                       fullWidth
                       value={option_B}
                       onChange={(e) => {
-                        handleChangeOptionB(e);
+                        setOption_B(e.target.value);
                       }}
                     />
                   </Stack>
@@ -171,7 +149,7 @@ const EditQuiz = () => {
                     <Radio
                       value="C"
                       checked={selectRadio === 'C'}
-                      onChange={(e) => handleChangeRadioButton(e)}
+                      onChange={(e) => setSelectRadio(e.target.value)}
                     />
                     <Box>C.</Box>
                     <TextField
@@ -181,7 +159,7 @@ const EditQuiz = () => {
                       fullWidth
                       value={option_C}
                       onChange={(e) => {
-                        handleChangeOptionC(e);
+                        setOption_C(e.target.value);
                       }}
                     />
                   </Stack>
