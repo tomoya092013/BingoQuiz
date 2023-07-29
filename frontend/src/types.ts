@@ -5,7 +5,11 @@ export type Quiz = {
   option_b: string;
   option_c: string;
   correct_mark: string;
-  is_ancer_opened: boolean;
+  is_answer_opened: boolean;
   created_at: Date;
   updated_at: Date;
+};
+
+export type PokemonImage = {
+  url: string;
 };

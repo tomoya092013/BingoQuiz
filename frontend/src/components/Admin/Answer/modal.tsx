@@ -7,16 +7,10 @@ const shakeAnimation = keyframes`
   0% {
     transform: rotate(-50deg);
   }
-  5% {
-    transform: rotate(30deg);
-  }
   10% {
-    transform: rotate(-40deg);
+    transform: rotate(40deg);
   }
   20% {
-    transform: rotate(50deg);
-  }
-  30% {
     transform: rotate(-30deg);
   }
   40% {
@@ -32,19 +26,19 @@ const shakeAnimation = keyframes`
     transform: rotate(-50deg);
   }
   60% {
-    transform: rotate(60deg);
+    transform: rotate(80deg);
   }
   70% {
     transform: rotate(-80deg);
   }
   75% {
-    transform: rotate(30deg);
+    transform: rotate(100deg);
   }
   80% {
-    transform: rotate(-90deg);
+    transform: rotate(-120deg);
   }
   90% {
-    transform: rotate(100deg);
+    transform: rotate(140deg);
   }
   95% {
     transform: rotate(-2700deg);
@@ -76,6 +70,7 @@ type Props = {
   pokeImage: string;
   pokeName: string;
   correctMark: string;
+  quizId: number;
 };
 
 const AnswerModal = ({
@@ -84,25 +79,50 @@ const AnswerModal = ({
   pokeImage,
   pokeName,
   correctMark,
+  quizId,
 }: Props) => {
-  // const [quizId, setQuizId] = useState<number>(0);
   const [isMove, setIsMove] = useState(false);
   const [isAppearPokemon, setIsAppearPokemon] = useState(false);
   const [isAppearCorrectMark, setIsAppearCorrectMark] = useState(false);
+  const [isDisabled, setIsDisabled] = useState(false);
 
-  const appearPokemon = () => {
+  const updateQuiz = async (id: number) => {
+    try {
+      const data = { is_answer_opened: true };
+      const res = await fetch(`http://localhost:3000/quizzes/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+      });
+      return res;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const appearPokemon = async () => {
+    setIsDisabled(true);
     setIsMove(true);
-    const timer = setTimeout(() => {
+    const timer = setTimeout(async () => {
+      await updateQuiz(quizId);
       setIsAppearPokemon(true);
     }, 5000);
     return () => clearTimeout(timer);
   };
 
-  const buckToMosterBallList = () => {
-    setIsModal(false);
+  const resetState = () => {
     setIsMove(false);
     setIsAppearPokemon(false);
     setIsAppearCorrectMark(false);
+    setIsDisabled(false);
+  };
+
+  const buckToMosterBallList = () => {
+    resetState();
+    setIsModal(false);
   };
 
   if (isModal) {
@@ -136,7 +156,7 @@ const AnswerModal = ({
                   />
                 </Button>
               ) : !isAppearPokemon ? (
-                <ShakeButton onClick={() => appearPokemon()}>
+                <ShakeButton disabled={isDisabled}>
                   <img
                     src="/images/monster_ball.png"
                     alt="monster_ball"

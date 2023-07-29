@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { Quiz } from '../../../types';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import AnswerModal from './modal';
 import { onClickGetPoke } from '../../../hooks/getPoke';
 
 const Answers = () => {
-  const location = useLocation();
+  // const location = useLocation();
   const [quizList, setQuizList] = useState<Quiz[]>([]);
   const [isModal, setIsModal] = useState(false);
   const [pokeName, setPokeName] = useState<string>('');
   const [pokeImage, setPokeImage] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+
+  const getQuizList = async () => {
+    const res = await fetch('http://localhost:3000/quizzes');
+    const json: Quiz[] = await res.json();
+    setQuizList(json);
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    setQuizList(location.state.quiz);
-  }, [location.state.quiz]);
+    getQuizList();
+  }, []);
 
   const goToMOdal = async () => {
     setIsModal(true);
@@ -78,38 +86,66 @@ const Answers = () => {
           height="60vh"
           padding="20px"
         >
-          {quizList.map((quiz) => (
-            <Grid item xs={6} md={3} key={quiz.id}>
-              <Stack direction="row" alignItems="flex-start">
-                <Typography variant="h3" marginRight="10px" color={'#ff9800'}>
-                  {quiz.id}.
-                </Typography>
-                <Button
-                  onDoubleClick={() => goToMOdal()}
-                  sx={{
-                    transition: 'transform 0.5s',
-                    '&:hover': {
-                      transform: 'scale(1.5)',
-                    },
-                  }}
-                >
-                  <img
-                    src="/images/monster_ball.png"
-                    alt="monster_ball"
-                    width={60}
-                    height={60}
-                  />
-                </Button>
-                <AnswerModal
-                  isModal={isModal}
-                  setIsModal={setIsModal}
-                  pokeImage={pokeImage}
-                  pokeName={pokeName}
-                  correctMark={quiz.correct_mark}
-                />
-              </Stack>
-            </Grid>
-          ))}
+          {isLoading ? (
+            <Stack
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
+              fontSize={'40px'}
+              color={'white'}
+            >
+              Loading...
+            </Stack>
+          ) : (
+            <>
+              {quizList.map((quiz) => (
+                <Grid item xs={6} md={3} key={quiz.id}>
+                  <Stack direction="row" alignItems="flex-start">
+                    <Typography
+                      variant="h3"
+                      marginRight="10px"
+                      color={'#ff9800'}
+                    >
+                      {quiz.id}.
+                    </Typography>
+                    {quiz.is_answer_opened ? (
+                      <Typography
+                        variant="h1"
+                        sx={{ color: '#ffe500', fontWeight: 'bold' }}
+                      >
+                        {quiz.correct_mark}
+                      </Typography>
+                    ) : (
+                      <Button
+                        onDoubleClick={() => goToMOdal()}
+                        sx={{
+                          transition: 'transform 0.5s',
+                          '&:hover': {
+                            transform: 'scale(1.5)',
+                          },
+                        }}
+                      >
+                        <img
+                          src="/images/monster_ball.png"
+                          alt="monster_ball"
+                          width={60}
+                          height={60}
+                        />
+                      </Button>
+                    )}
+                    <AnswerModal
+                      isModal={isModal}
+                      setIsModal={setIsModal}
+                      pokeImage={pokeImage}
+                      pokeName={pokeName}
+                      correctMark={quiz.correct_mark}
+                      quizId={quiz.id}
+                    />
+                  </Stack>
+                </Grid>
+              ))}
+            </>
+          )}
         </Grid>
       </Box>
     </Box>
