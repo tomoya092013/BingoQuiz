@@ -19,7 +19,7 @@ class QuizzesController < ApplicationController
   def update
     @quiz = Quiz.find(params[:id])
     @quiz.update(quiz_params)
-
+    render json: @quiz
   end
 
   def destroy
