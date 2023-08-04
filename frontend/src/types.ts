@@ -13,3 +13,8 @@ export type Quiz = {
 export type PokemonImage = {
   url: string;
 };
+
+export type User = {
+  id: number;
+  name: string;
+};

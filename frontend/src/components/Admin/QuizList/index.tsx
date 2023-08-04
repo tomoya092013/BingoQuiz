@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
 import { Box, Button, Grid, Stack, Typography, styled } from '@mui/material';
 import { Quiz } from '../../../types';
+import Answers from '../Answer';
 
 const AnswerButton = styled(Button)({
   width: '150px',
@@ -41,6 +42,8 @@ const QuizList = () => {
   const navigate = useNavigate();
   const [quizList, setQuizList] = useState<Quiz[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const refTop = useRef<HTMLDivElement | null>(null);
+  const refAnswer = useRef<HTMLDivElement | null>(null);
 
   const getQuizList = async () => {
     const res = await fetch('http://localhost:3000/quizzes');
@@ -54,7 +57,16 @@ const QuizList = () => {
   };
 
   const navigateAnswers = () => {
-    navigate('/admin/answers', { state: { quiz: quizList } });
+    // navigate('/admin/answers', { state: { quiz: quizList } });
+    refAnswer?.current?.scrollIntoView({
+      behavior: 'smooth',
+    });
+  };
+
+  const navigateTop = () => {
+    refTop?.current?.scrollIntoView({
+      behavior: 'smooth',
+    });
   };
 
   return (
@@ -77,6 +89,7 @@ const QuizList = () => {
             direction="row"
             justifyContent="center"
             minHeight={'100vh'}
+            ref={refTop}
             sx={{
               backgroundColor: '#eaffce',
             }}
@@ -88,7 +101,7 @@ const QuizList = () => {
               alignItems="center"
               sx={{ mt: 5 }}
             >
-              <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
+              <Typography variant="h2" sx={{ fontWeight: 'bold' }}>
                 問題一覧
               </Typography>
               <AnswerButton onClick={() => navigateAnswers()}>
@@ -130,6 +143,9 @@ const QuizList = () => {
               </Grid>
             </Box>
           </Grid>
+          <div ref={refAnswer}>
+            <Answers navigateTop={navigateTop} />
+          </div>
         </>
       )}
     </>

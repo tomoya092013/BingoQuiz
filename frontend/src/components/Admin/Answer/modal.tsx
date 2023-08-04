@@ -69,7 +69,7 @@ type Props = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
   pokeImage: string;
   pokeName: string;
-  correctMark: string;
+  correctMark?: string;
   quizId: number;
 };
 

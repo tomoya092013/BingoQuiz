@@ -1,18 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { Quiz } from '../../../types';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 import AnswerModal from './modal';
 import { onClickGetPoke } from '../../../hooks/getPoke';
+import ClearOpenedAnswerDialog from '../Dialog';
 
-const Answers = () => {
+const Answers = ({ navigateTop }: { navigateTop: () => void }) => {
   // const location = useLocation();
   const [quizList, setQuizList] = useState<Quiz[]>([]);
   const [isModal, setIsModal] = useState(false);
   const [pokeName, setPokeName] = useState<string>('');
   const [pokeImage, setPokeImage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [correctMark, setCorrectMark] = useState<string>();
+  const [quizId, setQuizId] = useState<number>(0);
 
   const getQuizList = async () => {
     const res = await fetch('http://localhost:3000/quizzes');
@@ -23,14 +26,23 @@ const Answers = () => {
 
   useEffect(() => {
     getQuizList();
-  }, []);
+  }, [isModal]);
 
-  const goToMOdal = async () => {
+  const goToMOdal = async (id: number, correct_mark?: string) => {
+    setQuizId(id);
+    setCorrectMark(correct_mark);
     setIsModal(true);
     const result = await onClickGetPoke();
     setPokeName(result.pokeName);
     setPokeImage(result.pokeImage);
   };
+
+  // const clearAllOpenedAnswer = async () => {
+  //   await fetch('http://localhost:3000/quizzes/clear_all_opened_answer', {
+  //     method: 'POST',
+  //   });
+  //   getQuizList();
+  // };
 
   return (
     <Box
@@ -70,8 +82,15 @@ const Answers = () => {
               justifyContent="flex-end"
               alignItems="center"
             >
-              <Link to="/">問題一覧</Link>
-              <DirectionsBikeIcon sx={{ marginLeft: '8px' }} />
+              <Button
+                onClick={() => navigateTop()}
+                variant="outlined"
+                size="large"
+                sx={{ fontWeight: 'bold' }}
+              >
+                問題一覧
+                <DirectionsBikeIcon sx={{ marginLeft: '8px' }} />
+              </Button>
             </Stack>
           </Typography>
         </Box>
@@ -117,7 +136,9 @@ const Answers = () => {
                       </Typography>
                     ) : (
                       <Button
-                        onDoubleClick={() => goToMOdal()}
+                        onDoubleClick={() =>
+                          goToMOdal(quiz.id, quiz.correct_mark)
+                        }
                         sx={{
                           transition: 'transform 0.5s',
                           '&:hover': {
@@ -133,14 +154,6 @@ const Answers = () => {
                         />
                       </Button>
                     )}
-                    <AnswerModal
-                      isModal={isModal}
-                      setIsModal={setIsModal}
-                      pokeImage={pokeImage}
-                      pokeName={pokeName}
-                      correctMark={quiz.correct_mark}
-                      quizId={quiz.id}
-                    />
                   </Stack>
                 </Grid>
               ))}
@@ -148,6 +161,22 @@ const Answers = () => {
           )}
         </Grid>
       </Box>
+      <AnswerModal
+        isModal={isModal}
+        setIsModal={setIsModal}
+        pokeImage={pokeImage}
+        pokeName={pokeName}
+        correctMark={correctMark}
+        quizId={quizId}
+      />
+      {/* <Button
+        variant="contained"
+        onClick={() => clearAllOpenedAnswer()}
+        sx={{ ml: '30px' }}
+      >
+        解答をクリアする
+      </Button> */}
+      <ClearOpenedAnswerDialog getQuizList={getQuizList} />
     </Box>
   );
 };
