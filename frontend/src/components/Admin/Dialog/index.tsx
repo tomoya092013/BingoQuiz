@@ -39,11 +39,11 @@ const ClearOpenedAnswerDialog = ({
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle id="alert-dialog-title">
-          {"Use Google's location service?"}
+          解答情報をリセットしますか？
         </DialogTitle>
         <DialogActions>
-          <Button onClick={() => handleClose()}>消さない</Button>
-          <Button onClick={() => clearAllOpenedAnswer()}>消す</Button>
+          <Button onClick={() => handleClose()}>しない</Button>
+          <Button onClick={() => clearAllOpenedAnswer()}>する</Button>
         </DialogActions>
       </Dialog>
     </>

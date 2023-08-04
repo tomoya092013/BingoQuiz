@@ -169,13 +169,6 @@ const Answers = ({ navigateTop }: { navigateTop: () => void }) => {
         correctMark={correctMark}
         quizId={quizId}
       />
-      {/* <Button
-        variant="contained"
-        onClick={() => clearAllOpenedAnswer()}
-        sx={{ ml: '30px' }}
-      >
-        解答をクリアする
-      </Button> */}
       <ClearOpenedAnswerDialog getQuizList={getQuizList} />
     </Box>
   );

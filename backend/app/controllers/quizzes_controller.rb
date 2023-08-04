@@ -27,6 +27,13 @@ class QuizzesController < ApplicationController
     @quiz.destroy
   end
 
+  def clear_all_opened_answer
+    # is_active カラムの値がすべて true に変更される
+    Quiz.update_all(is_answer_opened: false)
+    @quizzes = Quiz.all
+    render json: @quizzes
+  end
+
 
   private
 
