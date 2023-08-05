@@ -1,1 +1,1 @@
-$users = [{name:"Guest1", id:"123"}, {name:"Guest2", id:"456"}]
+$users = [{name:"ゲスト1", id:"123"}, {name:"ゲスト2", id:"456"}]

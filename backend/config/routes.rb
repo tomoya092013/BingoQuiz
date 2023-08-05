@@ -4,7 +4,7 @@ Rails.application.routes.draw do
 
   resources :messages
 
-  get "login/:id" => "login#index"
+  get "login/:name" => "login#index"
   resources :quizzes, only: [:index, :show,:create, :update, :destroy] do
     collection do
       post :clear_all_opened_answer
