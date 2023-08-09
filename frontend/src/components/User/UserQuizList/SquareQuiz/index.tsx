@@ -1,7 +1,13 @@
-import { Stack, Typography } from '@mui/material';
+import { Button, Stack, Typography } from '@mui/material';
 import { Quiz } from '../../../../types';
+import { useState } from 'react';
+import ModalSquareQuiz from './modal';
 
 const SquareQuiz = (quiz: Quiz) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const openChoiceModal = () => setIsOpen(true);
+  const closeChoiceModal = () => setIsOpen(false);
+
   return (
     <>
       <Stack direction="row" justifyContent="center" alignItems="center">
@@ -15,9 +21,16 @@ const SquareQuiz = (quiz: Quiz) => {
             borderRadius: '10px',
           }}
         >
-          <Typography variant="h4">{quiz.id}</Typography>
+          <Button onClick={() => openChoiceModal()}>
+            <Typography variant="h4">{quiz.id}</Typography>
+          </Button>
         </Stack>
       </Stack>
+      <ModalSquareQuiz
+        quiz={quiz}
+        isOpen={isOpen}
+        closeChoiceModal={closeChoiceModal}
+      />
     </>
   );
 };

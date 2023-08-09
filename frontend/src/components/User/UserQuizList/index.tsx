@@ -138,8 +138,8 @@ const UserQuizList = () => {
               </Button>
             </Stack>
 
-            <Typography variant="h5" sx={{ margin: '20px 0 10px 0' }}>
-              問題一覧載せときま〜す
+            <Typography variant="h6" sx={{ margin: '20px 0 10px 0' }}>
+              問題一覧( ✌︎'ω')✌︎
             </Typography>
             {quizList.map((quiz) => (
               <Stack
@@ -151,15 +151,18 @@ const UserQuizList = () => {
                 <Stack
                   justifyContent="center"
                   sx={{
-                    width: '80%',
-                    minWidth: '330px',
+                    width: '330px',
                     padding: '2px 6px',
                     background: '#fff0cd',
                     boxShadow: '0px 0px 0px 3px #fff0cd',
                     border: 'dashed 2px black',
                   }}
                 >
-                  <Typography variant="h5" gutterBottom sx={{ paddingLeft: 1 }}>
+                  <Typography
+                    variant="h5"
+                    gutterBottom
+                    sx={{ paddingLeft: 1, color: '#d600af' }}
+                  >
                     {quiz.id}. {quiz.question_title}
                   </Typography>
 

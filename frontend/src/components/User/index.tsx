@@ -19,6 +19,8 @@ const User: React.FC = () => {
     }
   };
 
+  if (!user) navigate('/');
+
   return (
     <>
       名前:{user.name} ID:{user.id}
