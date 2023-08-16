@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   resources :messages
 
   get "login/:name" => "login#index"
+  resources :guest_select_answer, only: [:index, :show, :create, :update]
   resources :quizzes, only: [:index, :show, :create, :update, :destroy] do
     collection do
       post :clear_all_opened_answer

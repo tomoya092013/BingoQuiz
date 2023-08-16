@@ -5,7 +5,9 @@ import ModalSquareQuiz from './modal';
 
 const SquareQuiz = (quiz: Quiz) => {
   const [isOpen, setIsOpen] = useState(false);
-  const openChoiceModal = () => setIsOpen(true);
+  const openChoiceModal = () => {
+    setIsOpen(true);
+  };
   const closeChoiceModal = () => setIsOpen(false);
 
   return (

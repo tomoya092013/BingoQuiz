@@ -9,6 +9,8 @@ import {
 import { Quiz } from '../../../../types';
 import { useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { useRecoilValue } from 'recoil';
+import { userInfoSelector } from '../../../../store';
 
 type Props = {
   quiz: Quiz;
@@ -32,6 +34,7 @@ const theme = createTheme({
 });
 
 const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
+  const user = useRecoilValue(userInfoSelector);
   const [selectAncer, setSelectAncer] = useState<'A' | 'B' | 'C' | null>();
 
   const selectA = () => {
@@ -42,6 +45,29 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
   };
   const selectC = () => {
     setSelectAncer('C');
+  };
+
+  const onSelectAnswer = async () => {
+    const key = `question_${quiz.id}_select_mark`;
+    const data = {
+      guest_id: user.id,
+      [key]: selectAncer,
+    };
+    // const key = `question_${quiz.id}_select_mark`;
+    // data[key] = selectAncer;
+
+    const res = await fetch(
+      `http://localhost:3000/guest_select_answer/${user.id}`,
+      {
+        method: 'PUT',
+        headers: {
+          // Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }
+    );
+    console.log(res);
   };
 
   return (
@@ -160,7 +186,17 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
               position: 'absolute',
               top: '380px',
               width: '220px',
+              backgroundColor:
+                selectAncer !== 'A' &&
+                selectAncer !== 'B' &&
+                selectAncer !== 'C'
+                  ? 'gray'
+                  : '#00ffe7',
             }}
+            disabled={
+              selectAncer !== 'A' && selectAncer !== 'B' && selectAncer !== 'C'
+            }
+            onClick={onSelectAnswer}
           >
             決定
           </Button>

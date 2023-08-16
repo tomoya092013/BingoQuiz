@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_08_125600) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_09_130219) do
+  create_table "guest_select_answers", primary_key: "guest_id", force: :cascade do |t|
+    t.string "question_1_select_mark"
+    t.string "question_3_select_mark"
+    t.string "question_4_select_mark"
+    t.string "question_2_select_mark"
+    t.string "question_5_select_mark"
+    t.string "question_6_select_mark"
+    t.string "question_7_select_mark"
+    t.string "question_8_select_mark"
+    t.string "question_9_select_mark"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "messages", force: :cascade do |t|
     t.text "body"
     t.datetime "created_at", null: false
