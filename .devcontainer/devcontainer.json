@@ -21,7 +21,7 @@
   // Configure tool-specific properties.
   "customizations": {
     "vscode": {
-      "extensions": ["ms-vsliveshare.vsliveshare"]
+      "extensions": ["ms-vsliveshare.vsliveshare", "esbenp.prettier-vscode"]
     }
   },
 

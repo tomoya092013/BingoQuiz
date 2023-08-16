@@ -1,0 +1,2 @@
+class GuestSelectAnswer < ApplicationRecord
+end

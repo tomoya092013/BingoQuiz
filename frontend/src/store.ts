@@ -10,12 +10,10 @@ export const pokemonImageState = atom<PokemonImage[]>({
 
 export const jwtTokenState = atom<string>({
   key: 'jwtTokenState',
-  default: 'eyJhbGciOiJub25lIn0.eyJpZCI6IjQ1NiIsIm5hbWUiOiJHdWVzdDIifQ.',
+  default: '',
 });
 
 export const userInfoSelector = selector<User>({
   key: 'userInfoSelector',
-  get: ({ get }) => {
-    return jwt_decode(get(jwtTokenState)) as User;
-  },
+  get: ({ get }) => jwt_decode(get(jwtTokenState)) as User,
 });

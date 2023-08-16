@@ -3,30 +3,22 @@ require_relative "../../db/users.rb"
 
 class LoginController < ApplicationController
   def index
-
-    id = params[:id]
-    # idを使ってnameを取得する処理
-    name = get_name(id)
-
-    payload = {id:id,name:name}
+    puts params[:name]
+    name = params[:name]
+    id = get_id(name)
+    if id == nil 
+      then  return render ""  end
+    payload = { id: id, name: name }
     
     token = JWT.encode payload, nil, 'none'
     render json: token
   end
 
 
-  def get_name(id)
-    # p [1, 2, 3, 4, 5] find { |i| i % 2 == 0 }
-    # users = [{name: "abc", id: "123"}, {name: "def", id: "456"}]
-    # user_a = users.find { |user| user[:id] == id }
-    # puts user_a
-    puts id
-    user = $users.find { |user| user[:id] == id }
-    puts user
-    return  user[:name]  
+  def get_id(name)
+    user = $users.find { |user| user[:name] == name }
+    if user == nil then return nil end
+    return  user[:id]  
   end
 
-
-
 end
-

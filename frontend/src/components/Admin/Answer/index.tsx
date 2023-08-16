@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Quiz } from '../../../types';
 // import { Link } from 'react-router-dom';
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
@@ -36,13 +36,6 @@ const Answers = ({ navigateTop }: { navigateTop: () => void }) => {
     setPokeName(result.pokeName);
     setPokeImage(result.pokeImage);
   };
-
-  // const clearAllOpenedAnswer = async () => {
-  //   await fetch('http://localhost:3000/quizzes/clear_all_opened_answer', {
-  //     method: 'POST',
-  //   });
-  //   getQuizList();
-  // };
 
   return (
     <Box
