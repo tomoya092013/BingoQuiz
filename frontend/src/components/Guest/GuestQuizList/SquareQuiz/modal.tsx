@@ -6,11 +6,11 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Quiz } from '../../../../types';
-import { useState } from 'react';
+import { Quiz, GuestAnswer } from '../../../../types';
+import { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useRecoilValue } from 'recoil';
-import { userInfoSelector } from '../../../../store';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { guestAnswerListState, guestInfoSelector } from '../../../../store';
 
 type Props = {
   quiz: Quiz;
@@ -34,8 +34,10 @@ const theme = createTheme({
 });
 
 const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
-  const user = useRecoilValue(userInfoSelector);
+  const guest = useRecoilValue(guestInfoSelector);
   const [selectAncer, setSelectAncer] = useState<'A' | 'B' | 'C' | null>();
+  const [guestAnswerList, setGuestAnswerList] =
+    useRecoilState(guestAnswerListState);
 
   const selectA = () => {
     setSelectAncer('A');
@@ -48,27 +50,35 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
   };
 
   const onSelectAnswer = async () => {
-    const key = `question_${quiz.id}_select_mark`;
+    const quizId = `question_${quiz.id}_select_mark`;
     const data = {
-      guest_id: user.id,
-      [key]: selectAncer,
+      guest_id: guest.id,
+      [quizId]: selectAncer,
     };
-    // const key = `question_${quiz.id}_select_mark`;
-    // data[key] = selectAncer;
 
-    const res = await fetch(
-      `http://localhost:3000/guest_select_answer/${user.id}`,
-      {
-        method: 'PUT',
-        headers: {
-          // Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      }
-    );
-    console.log(res);
+    await fetch(`http://localhost:3000/guest_select_answer/${guest.id}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    setGuestAnswerList({
+      ...guestAnswerList,
+      [quiz.id as keyof GuestAnswer]: selectAncer,
+    });
+    closeChoiceModal();
   };
+
+  useEffect(() => {
+    const selectAnswer = guestAnswerList[quiz.id as keyof GuestAnswer] as
+      | 'A'
+      | 'B'
+      | 'C';
+    setSelectAncer(selectAnswer);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

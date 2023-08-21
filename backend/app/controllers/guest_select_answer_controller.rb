@@ -9,26 +9,16 @@ class GuestSelectAnswerController < ApplicationController
     
     render json: {guestSelectAnswer:@guestSelectAnswer}
   end
-  # def show
-  #   guest_id = params[:guest_id]
-  #   question_id = params[:question_id]
-  #   @guestSelectAnswer = GuestSelectAnswer.find_by(guest_id: guest_id, question_id: question_id)
-
-  #   puts @guestSelectAnswer
-  #   puts 'あ'
-  #   render json: @guestSelectAnswer
-  # end
 
   def create
     @guestSelectAnswer = GuestSelectAnswer.new(guest_select_answer_params)
     @guestSelectAnswer.save
-    render json: @guestSelectAnswer
+    render json: {guestSelectAnswer:@guestSelectAnswer}
   end
 
   def update
     @guestSelectAnswer = GuestSelectAnswer.find(params[:id])
     @guestSelectAnswer.update(guest_select_answer_params)
-    render json: @guestSelectAnswer
   end
 
   def guest_select_answer_params

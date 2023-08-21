@@ -14,7 +14,20 @@ export type PokemonImage = {
   url: string;
 };
 
-export type User = {
+export type Guest = {
   id: number;
   name: string;
+};
+
+export type GuestAnswer = {
+  guestId: number;
+  1: string;
+  2: string;
+  3: string;
+  4: string;
+  5: string;
+  6: string;
+  7: string;
+  8: string;
+  9: string;
 };

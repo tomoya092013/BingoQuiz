@@ -1,5 +1,5 @@
 require 'jwt'
-require_relative "../../db/users.rb"
+require_relative "../../db/guests.rb"
 
 class LoginController < ApplicationController
   def index
@@ -16,9 +16,9 @@ class LoginController < ApplicationController
 
 
   def get_id(name)
-    user = $users.find { |user| user[:name] == name }
-    if user == nil then return nil end
-    return  user[:id]  
+    guest = $guests.find { |guest| guest[:name] == name }
+    if guest == nil then return nil end
+    return  guest[:id]  
   end
 
 end

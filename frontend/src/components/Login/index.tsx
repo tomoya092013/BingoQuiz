@@ -6,6 +6,7 @@ import { jwtTokenState } from '../../store';
 
 const Login = () => {
   const [password, setPassword] = useState<string>('');
+
   const setJwtToken = useSetRecoilState(jwtTokenState);
   const navigate = useNavigate();
 
@@ -17,14 +18,15 @@ const Login = () => {
       return;
     }
     setJwtToken(text);
-    navigate('user');
+    navigate('guest');
   };
 
   const onLoginButton = () => {
     if (password === '') return;
     if (password === '管理者') {
-      navigate('admin/quizList') 
-    return}
+      navigate('admin/quizList');
+      return;
+    }
     guestLoginRequest();
   };
 
