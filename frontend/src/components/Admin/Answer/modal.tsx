@@ -69,7 +69,7 @@ type Props = {
   setIsModal: React.Dispatch<React.SetStateAction<boolean>>;
   pokeImage: string;
   pokeName: string;
-  correctMark?: string;
+  correctMark: string;
   quizId: number;
 };
 
@@ -103,11 +103,24 @@ const AnswerModal = ({
     }
   };
 
+  const broadcast_answer = async (id: number, answer: string) => {
+    const requestJson = JSON.stringify({ quizId: id, answer });
+
+    await fetch('http://localhost:3000/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ body: requestJson }),
+    });
+  };
+
   const appearPokemon = async () => {
     setIsDisabled(true);
     setIsMove(true);
     const timer = setTimeout(async () => {
       await updateQuiz(quizId);
+      await broadcast_answer(quizId, correctMark);
       setIsAppearPokemon(true);
     }, 5000);
     return () => clearTimeout(timer);

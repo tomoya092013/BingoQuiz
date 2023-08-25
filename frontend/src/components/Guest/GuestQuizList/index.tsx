@@ -1,30 +1,30 @@
 import { useEffect, useState } from 'react';
 import { Quiz, GuestAnswer } from '../../../types';
-import { Grid, Stack, Typography, styled } from '@mui/material';
+import { Box, Grid, Stack, Typography, styled } from '@mui/material';
 import SquareQuiz from './SquareQuiz';
 import { fetchQuizList } from '../../../hooks/fetchQuizList';
 import { fetchGuestAnswer } from '../../../hooks/fetchGuestAnswer';
 import { useRecoilState } from 'recoil';
-import { guestAnswerListState } from '../../../store';
+import { guestAnswerListState, quizListState } from '../../../store';
 import { createGuestAnswer } from '../../../hooks/createGuestAnswer';
 
 type Props = {
   guestId: number;
 };
 
+const CustomTypography = styled(Typography)({
+  width: '100px',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+});
+
 const GuestQuizList = ({ guestId }: Props) => {
-  const [quizList, setQuizList] = useState<Quiz[]>([]);
+  const [quizList, setQuizList] = useRecoilState(quizListState);
   const [shuffleQuizList, setShuffleQuizList] = useState<Quiz[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [guestAnswerList, setGuestAnswerList] =
     useRecoilState(guestAnswerListState);
-
-  const CustomTypography = styled(Typography)({
-    width: '100px',
-    whiteSpace: 'nowrap',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-  });
 
   const onShuffleButton = (targetList: Quiz[]) => {
     const newQuizList = [...targetList];
@@ -46,13 +46,8 @@ const GuestQuizList = ({ guestId }: Props) => {
   const getGuestAnswer = async () => {
     const res = await fetchGuestAnswer(guestId);
     if (res === undefined) {
-      const data = await createGuestAnswer(guestId);
-      console.log(data);
+      await createGuestAnswer(guestId);
     }
-
-    console.log(guestId);
-    console.log(res);
-
     const data: GuestAnswer = {
       guestId: guestId,
       1: res.question_1_select_mark,
@@ -79,6 +74,7 @@ const GuestQuizList = ({ guestId }: Props) => {
   useEffect(() => {
     getQuizList();
     getGuestAnswer();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
@@ -158,29 +154,47 @@ const GuestQuizList = ({ guestId }: Props) => {
               >
                 {shuffleQuizList.map((quiz) => (
                   <Grid key={quiz.id} item xs={4}>
-                    <SquareQuiz quiz={quiz} />
+                    <SquareQuiz quiz={quiz} guestId={guestId} />
                   </Grid>
                 ))}
               </Grid>
+
               <Stack
-                justifyContent="center"
+                direction="row"
+                justifyContent="space-evenly"
                 alignItems="center"
-                sx={{
-                  position: 'absolute',
-                  top: '410px',
-                  width: '200px',
-                  height: '50px',
-                  fontSize: '24px',
-                  background: '#ff8b61',
-                  color: '#FFF',
-                  fontWeight: 'bold',
-                  boxShadow: '7px 13px 7px 2px #9e4700',
-                  borderRadius: '40px',
-                  border: 'solid 2px #040404',
-                }}
-                onClick={() => onShuffleButton(shuffleQuizList)}
+                width={'100%'}
+                sx={{ position: 'absolute', top: '395px' }}
               >
-                シャッフル
+                <Box
+                  sx={{
+                    width: '160px',
+                    height: '50px',
+                    fontSize: '24px',
+                    background: '#ff8b61',
+                    alignItems: 'center',
+                    color: '#FFF',
+                    fontWeight: 'bold',
+                    boxShadow: '7px 13px 7px 2px #9e4700',
+                    borderRadius: '40px',
+                    border: 'solid 2px #040404',
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                  onClick={() => onShuffleButton(shuffleQuizList)}
+                >
+                  シャンブルズ
+                </Box>
+
+                <img
+                  src="/images/room.png"
+                  alt="room"
+                  style={{
+                    borderRadius: '10px',
+                    width: '120px',
+                    height: '80px',
+                  }}
+                />
               </Stack>
             </Stack>
 

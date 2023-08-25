@@ -31,3 +31,5 @@ export type GuestAnswer = {
   8: string;
   9: string;
 };
+
+export type WsAdminAnswer = { quizId: number; answer: 'A' | 'B' | 'C' | '' };

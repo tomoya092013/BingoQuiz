@@ -14,7 +14,7 @@ const Answers = ({ navigateTop }: { navigateTop: () => void }) => {
   const [pokeName, setPokeName] = useState<string>('');
   const [pokeImage, setPokeImage] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [correctMark, setCorrectMark] = useState<string>();
+  const [correctMark, setCorrectMark] = useState<string>('');
   const [quizId, setQuizId] = useState<number>(0);
 
   const getQuizList = async () => {
@@ -28,7 +28,7 @@ const Answers = ({ navigateTop }: { navigateTop: () => void }) => {
     getQuizList();
   }, [isModal]);
 
-  const goToMOdal = async (id: number, correct_mark?: string) => {
+  const goToModal = async (id: number, correct_mark: string) => {
     setQuizId(id);
     setCorrectMark(correct_mark);
     setIsModal(true);
@@ -130,7 +130,7 @@ const Answers = ({ navigateTop }: { navigateTop: () => void }) => {
                     ) : (
                       <Button
                         onDoubleClick={() =>
-                          goToMOdal(quiz.id, quiz.correct_mark)
+                          goToModal(quiz.id, quiz.correct_mark)
                         }
                         sx={{
                           transition: 'transform 0.5s',

@@ -1,21 +1,33 @@
-import { Button, Stack, Typography } from '@mui/material';
-import { GuestAnswer, Quiz } from '../../../../types';
+import { Avatar, Button, Stack, Typography } from '@mui/material';
+import { GuestAnswer, Quiz, WsAdminAnswer } from '../../../../types';
 import { useEffect, useState } from 'react';
 import ModalSquareQuiz from './modal';
-import { useRecoilValue } from 'recoil';
-import { guestAnswerListState } from '../../../../store';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+  guestAnswerListState,
+  quizListState,
+  wsAdminAnswerState,
+} from '../../../../store';
+import { fetchQuizList } from '../../../../hooks/fetchQuizList';
 
 type Props = {
   quiz: Quiz;
+  guestId: number;
 };
 
-const SquareQuiz = ({ quiz }: Props) => {
+const ws = new WebSocket('ws://localhost:3000/cable');
+
+const SquareQuiz = ({ quiz, guestId }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [quizList, setQuizList] = useRecoilState(quizListState);
+  const guestAnswerList = useRecoilValue(guestAnswerListState);
+  const [wsAdminAnswerList, setWsAdminAnswerList] =
+    useRecoilState(wsAdminAnswerState);
+
   const openChoiceModal = () => {
     setIsOpen(true);
   };
   const closeChoiceModal = () => setIsOpen(false);
-  const guestAnswerList = useRecoilValue(guestAnswerListState);
 
   const isSelectedAnswer = (quizId: number) => {
     const selectedMark = guestAnswerList[quizId as keyof GuestAnswer] as
@@ -27,12 +39,48 @@ const SquareQuiz = ({ quiz }: Props) => {
     return isSelected;
   };
 
+  const getQuizList = async () => {
+    const quizList = await fetchQuizList();
+    setQuizList(quizList);
+  };
+
   useEffect(() => {
     isSelectedAnswer(quiz.id);
+    getQuizList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(isSelectedAnswer(quiz.id));
+  ws.onopen = () => {
+    console.log('Connected to websocket server');
+
+    ws.send(
+      JSON.stringify({
+        command: 'subscribe',
+        identifier: JSON.stringify({
+          id: `${guestId}`,
+          channel: 'MessagesChannel',
+        }),
+      })
+    );
+  };
+
+  ws.onmessage = (e) => {
+    const data = JSON.parse(e.data);
+    if (data.type === 'ping') return;
+    if (data.type === 'welcome') return;
+    if (data.type === 'confirm_subscription') return;
+    const perseData: WsAdminAnswer = JSON.parse(data.message.body);
+    updateAdminAnswerList(perseData);
+  };
+
+  const updateAdminAnswerList = (data: WsAdminAnswer) => {
+    const updatedList = wsAdminAnswerList.map((adminAnswer) =>
+      adminAnswer.quizId === data.quizId
+        ? { ...adminAnswer, answer: data.answer }
+        : adminAnswer
+    );
+    setWsAdminAnswerList(updatedList);
+  };
 
   return (
     <>
@@ -47,14 +95,25 @@ const SquareQuiz = ({ quiz }: Props) => {
             borderRadius: '10px',
           }}
         >
-          <Button onClick={() => openChoiceModal()}>
-            <Typography variant="h4">{quiz.id}</Typography>
-            {isSelectedAnswer(quiz.id) && (
-              <Typography variant="h4">
-                .{guestAnswerList[`${quiz.id}` as keyof GuestAnswer]}
-              </Typography>
-            )}
-          </Button>
+          {quizList[quiz.id - 1].is_answer_opened ? (
+            <Avatar
+              alt="punch"
+              src="/images/punch.jpg"
+              sx={{
+                width: 70,
+                height: 70,
+              }}
+            />
+          ) : (
+            <Button onClick={() => openChoiceModal()}>
+              <Typography variant="h4">{quiz.id}</Typography>
+              {isSelectedAnswer(quiz.id) && (
+                <Typography variant="h4">
+                  .{guestAnswerList[`${quiz.id}` as keyof GuestAnswer]}
+                </Typography>
+              )}
+            </Button>
+          )}
         </Stack>
       </Stack>
       <ModalSquareQuiz
