@@ -1,16 +1,17 @@
 import { Button, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useResetRecoilState } from 'recoil';
-import { jwtTokenState } from '../store';
 import { FallbackProps } from 'react-error-boundary';
+import { guestInfoState } from '../store';
 
 const ErrorFallback = ({ error }: FallbackProps) => {
   console.log(error);
-  const resetJwtToken = useResetRecoilState(jwtTokenState);
+  const clearGuestInfo = useResetRecoilState(guestInfoState);
   const navigate = useNavigate();
 
   const goToLogin = async () => {
-    resetJwtToken();
+    clearGuestInfo();
+    localStorage.removeItem('jwtToken');
     navigate('/');
     window.location.reload();
   };

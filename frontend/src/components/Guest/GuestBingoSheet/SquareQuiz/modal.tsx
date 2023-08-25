@@ -6,11 +6,11 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Quiz, GuestAnswer } from '../../../../types';
+import { Quiz, GuestAnswer, Guest } from '../../../../types';
 import { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { guestAnswerListState, guestInfoSelector } from '../../../../store';
+import { guestAnswerListState, guestInfoState } from '../../../../store';
 
 type Props = {
   quiz: Quiz;
@@ -34,7 +34,7 @@ const theme = createTheme({
 });
 
 const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
-  const guest = useRecoilValue(guestInfoSelector);
+  const guestInfo = useRecoilValue(guestInfoState);
   const [selectAncer, setSelectAncer] = useState<'A' | 'B' | 'C' | null>();
   const [guestAnswerList, setGuestAnswerList] =
     useRecoilState(guestAnswerListState);
@@ -49,7 +49,7 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
     setSelectAncer('C');
   };
 
-  const onSelectAnswer = async () => {
+  const onSelectAnswer = async (guest: Guest) => {
     const quizId = `question_${quiz.id}_select_mark`;
     const data = {
       guest_id: guest.id,
@@ -79,6 +79,8 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
     setSelectAncer(selectAnswer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!guestInfo) return <></>;
 
   return (
     <ThemeProvider theme={theme}>
@@ -206,7 +208,7 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
             disabled={
               selectAncer !== 'A' && selectAncer !== 'B' && selectAncer !== 'C'
             }
-            onClick={onSelectAnswer}
+            onClick={() => onSelectAnswer(guestInfo)}
           >
             決定
           </Button>

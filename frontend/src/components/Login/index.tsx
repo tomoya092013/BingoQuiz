@@ -1,23 +1,19 @@
 import { Button, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useSetRecoilState } from 'recoil';
-import { jwtTokenState } from '../../store';
 
 const Login = () => {
   const [password, setPassword] = useState<string>('');
-
-  const setJwtToken = useSetRecoilState(jwtTokenState);
   const navigate = useNavigate();
 
   const guestLoginRequest = async () => {
     const res = await fetch(`http://localhost:3000/login/${password}`);
-    const text = await res.text();
-    if (text === ' ') {
+    const jwtToken = await res.text();
+    localStorage.setItem('jwtToken', jwtToken);
+    if (jwtToken === ' ') {
       alert('違う！！');
       return;
     }
-    setJwtToken(text);
     navigate('guest');
   };
 

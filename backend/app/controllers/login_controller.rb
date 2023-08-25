@@ -3,7 +3,6 @@ require_relative "../../db/guests.rb"
 
 class LoginController < ApplicationController
   def index
-    puts params[:name]
     name = params[:name]
     id = get_id(name)
     if id == nil 

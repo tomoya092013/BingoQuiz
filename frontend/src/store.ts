@@ -1,6 +1,5 @@
-import jwt_decode from 'jwt-decode';
-import { atom, selector } from 'recoil';
-import { PokemonImage, Guest, GuestAnswer, WsAdminAnswer, Quiz } from './types';
+import { atom } from 'recoil';
+import { PokemonImage, GuestAnswer, WsAdminAnswer, Quiz, Guest } from './types';
 
 const defaultGuestAnswerListState = {
   guestId: 0,
@@ -32,14 +31,9 @@ export const pokemonImageState = atom<PokemonImage[]>({
   default: [],
 });
 
-export const jwtTokenState = atom<string>({
-  key: 'jwtTokenState',
-  default: '',
-});
-
-export const guestInfoSelector = selector<Guest>({
-  key: 'guestInfoSelector',
-  get: ({ get }) => jwt_decode(get(jwtTokenState)) as Guest,
+export const guestInfoState = atom<Guest | null>({
+  key: 'guestInfoState',
+  default: null,
 });
 
 export const guestAnswerListState = atom<GuestAnswer>({

@@ -19,7 +19,7 @@ const CustomTypography = styled(Typography)({
   textOverflow: 'ellipsis',
 });
 
-const GuestQuizList = ({ guestId }: Props) => {
+const GuestBingoSheet = ({ guestId }: Props) => {
   const [quizList, setQuizList] = useRecoilState(quizListState);
   const [shuffleQuizList, setShuffleQuizList] = useState<Quiz[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -309,4 +309,4 @@ const GuestQuizList = ({ guestId }: Props) => {
   );
 };
 
-export default GuestQuizList;
+export default GuestBingoSheet;
