@@ -17,6 +17,7 @@ const CustomTypography = styled(Typography)({
   whiteSpace: 'nowrap',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+  color: 'black',
 });
 
 const GuestBingoSheet = ({ guestId }: Props) => {
@@ -87,6 +88,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
           width={'100%'}
           height={'100vh'}
           fontSize={'40px'}
+          color="black"
         >
           Loading...
         </Stack>
@@ -97,37 +99,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
             justifyContent="center"
             minHeight={'100vh'}
             width={'100%'}
-            sx={{
-              backgroundColor: '#dfffea',
-            }}
           >
-            <Stack
-              justifyContent="center"
-              alignItems="center"
-              sx={{ padding: '20px 5px' }}
-            >
-              <Typography
-                variant="h4"
-                sx={{
-                  fontWeight: 'bold',
-                  color: '#4875ff',
-                  textShadow: '0 0 15px #FF6694',
-                }}
-              >
-                みんなが知りたい
-              </Typography>
-              <Typography
-                variant="h4"
-                sx={{
-                  fontWeight: 'bold',
-                  color: '#4875ff',
-                  textShadow: '0 0 15px #FF6694',
-                }}
-              >
-                9個の謎
-              </Typography>
-            </Stack>
-
             <Stack
               justifyContent="center"
               alignItems="center"
@@ -237,6 +209,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
                           sx={{
                             borderRadius: '50%',
                             border: '2px solid #f10',
+                            color: 'black',
                           }}
                         >
                           A
@@ -261,6 +234,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
                           sx={{
                             borderRadius: '50%',
                             border: '2px solid #f10',
+                            color: 'black',
                           }}
                         >
                           B
@@ -285,6 +259,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
                           sx={{
                             borderRadius: '50%',
                             border: '2px solid #f10',
+                            color: 'black',
                           }}
                         >
                           C

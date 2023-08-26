@@ -35,25 +35,25 @@ const theme = createTheme({
 
 const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
   const guestInfo = useRecoilValue(guestInfoState);
-  const [selectAncer, setSelectAncer] = useState<'A' | 'B' | 'C' | null>();
+  const [selectAnswer, setSelectAnswer] = useState<'A' | 'B' | 'C' | null>();
   const [guestAnswerList, setGuestAnswerList] =
     useRecoilState(guestAnswerListState);
 
   const selectA = () => {
-    setSelectAncer('A');
+    setSelectAnswer('A');
   };
   const selectB = () => {
-    setSelectAncer('B');
+    setSelectAnswer('B');
   };
   const selectC = () => {
-    setSelectAncer('C');
+    setSelectAnswer('C');
   };
 
   const onSelectAnswer = async (guest: Guest) => {
     const quizId = `question_${quiz.id}_select_mark`;
     const data = {
       guest_id: guest.id,
-      [quizId]: selectAncer,
+      [quizId]: selectAnswer,
     };
 
     await fetch(`http://localhost:3000/guest_select_answer/${guest.id}`, {
@@ -66,7 +66,7 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
     });
     setGuestAnswerList({
       ...guestAnswerList,
-      [quiz.id as keyof GuestAnswer]: selectAncer,
+      [quiz.id as keyof GuestAnswer]: selectAnswer,
     });
     closeChoiceModal();
   };
@@ -76,9 +76,9 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
       | 'A'
       | 'B'
       | 'C';
-    setSelectAncer(selectAnswer);
+    setSelectAnswer(selectAnswer);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [guestAnswerList]);
 
   if (!guestInfo) return <></>;
 
@@ -144,7 +144,7 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
               onClick={() => selectA()}
               sx={{
                 color: '#0005da',
-                backgroundColor: selectAncer === 'A' ? '#ffff00' : '#ffffff',
+                backgroundColor: selectAnswer === 'A' ? '#ffff00' : '#ffffff',
                 width: '100%',
               }}
             >
@@ -161,7 +161,7 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
               onClick={() => selectB()}
               sx={{
                 color: '#0005da',
-                backgroundColor: selectAncer === 'B' ? '#ffff00' : '#ffffff',
+                backgroundColor: selectAnswer === 'B' ? '#ffff00' : '#ffffff',
                 width: '100%',
               }}
             >
@@ -178,7 +178,7 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
               onClick={() => selectC()}
               sx={{
                 color: '#0005da',
-                backgroundColor: selectAncer === 'C' ? '#ffff00' : '#ffffff',
+                backgroundColor: selectAnswer === 'C' ? '#ffff00' : '#ffffff',
                 width: '100%',
               }}
             >
@@ -199,14 +199,16 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
               top: '380px',
               width: '220px',
               backgroundColor:
-                selectAncer !== 'A' &&
-                selectAncer !== 'B' &&
-                selectAncer !== 'C'
+                selectAnswer !== 'A' &&
+                selectAnswer !== 'B' &&
+                selectAnswer !== 'C'
                   ? 'gray'
                   : '#00ffe7',
             }}
             disabled={
-              selectAncer !== 'A' && selectAncer !== 'B' && selectAncer !== 'C'
+              selectAnswer !== 'A' &&
+              selectAnswer !== 'B' &&
+              selectAnswer !== 'C'
             }
             onClick={() => onSelectAnswer(guestInfo)}
           >

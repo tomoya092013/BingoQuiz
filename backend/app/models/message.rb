@@ -3,8 +3,7 @@ class Message < ApplicationRecord
 
   private
 
-  def broadcast_messages
-    # {1: "A"}
+  def broadcast_message
     ActionCable.server.broadcast('MessagesChannel', { id:, body: })
   end
 end
