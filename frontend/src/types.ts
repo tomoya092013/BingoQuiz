@@ -33,3 +33,5 @@ export type GuestAnswer = {
 };
 
 export type WsAdminAnswer = { quizId: number; answer: 'A' | 'B' | 'C' | '' };
+
+export type EnqueteTotal = { tomoya: number; miki: number };
