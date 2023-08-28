@@ -1,7 +1,12 @@
 import { Box, Button, Slider, Stack, Typography, styled } from '@mui/material';
 import TwitterIcon from '@mui/icons-material/Twitter';
-import { useState } from 'react';
-import { EnqueteTotal } from '../../types';
+import { useEffect, useState } from 'react';
+import { EnqueteTotal, Guest } from '../../types';
+import jwt_decode from 'jwt-decode';
+import { guestInfoState } from '../../store';
+import { useRecoilState } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import { sendEnquete } from '../../hooks/sendEnquete';
 
 const VerticalTypography = styled(Typography)({
   writingMode: 'vertical-lr',
@@ -38,6 +43,8 @@ const ENQUETES = [
 const Enquete = () => {
   const [enqueteValue, setEnqueteValue] =
     useState<EnqueteTotal[]>(defaultEnqueteTotal);
+  const [guestInfo, setGuestInfo] = useRecoilState(guestInfoState);
+  const navigate = useNavigate();
 
   const onChangeSlider = (
     _event: Event,
@@ -55,6 +62,27 @@ const Enquete = () => {
     newEnqueteValue[index].miki = 100 - newValue;
     setEnqueteValue(newEnqueteValue);
   };
+
+  const onClickSend = () => {
+    if (!guestInfo) return;
+    sendEnquete(guestInfo.id, enqueteValue);
+    navigate('/guest');
+  };
+
+  useEffect(() => {
+    if (localStorage['jwtToken']) {
+      const token = localStorage.getItem('jwtToken');
+      if (token) {
+        const guestInfo: Guest = jwt_decode(token);
+        setGuestInfo(guestInfo);
+      } else {
+        navigate('/');
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  if (!guestInfo) return <></>;
 
   return (
     <Stack justifyContent="center" alignItems="center" width="100%">
@@ -140,7 +168,7 @@ const Enquete = () => {
             backgroundImage: 'url("/images/enquete2.jpg")',
             backgroundRepeat: 'no-repeat',
             backgroundSize: 'contain',
-            height: '165px',
+            height: '190px',
             width: '100%',
           }}
         >
@@ -152,6 +180,7 @@ const Enquete = () => {
               borderRadius: '20px',
               backgroundColor: '#1976d2a1',
             }}
+            onClick={() => onClickSend()}
           >
             <Typography variant="h5">送信</Typography>
           </Button>

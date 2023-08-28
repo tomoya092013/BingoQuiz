@@ -14,7 +14,7 @@ const Login = () => {
       alert('違う！！');
       return;
     }
-    navigate('guest');
+    navigate('/enquete');
   };
 
   const onLoginButton = () => {
