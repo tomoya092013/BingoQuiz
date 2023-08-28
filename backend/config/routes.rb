@@ -4,6 +4,8 @@ Rails.application.routes.draw do
 
   resources :messages
 
+  resources :enquetes, only: [:index]
+  post '/enquete/:guest_id', to: 'enquetes#create_or_update'
   get "login/:name" => "login#index"
   resources :guest_select_answer, only: [:index, :show, :create, :update]
   resources :quizzes, only: [:index, :show, :create, :update, :destroy] do

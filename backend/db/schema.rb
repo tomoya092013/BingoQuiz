@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_09_130219) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_27_150835) do
+  create_table "enquetes", primary_key: "guest_id", force: :cascade do |t|
+    t.integer "enquete_1"
+    t.integer "enquete_2"
+    t.integer "enquete_3"
+    t.integer "enquete_4"
+    t.integer "enquete_5"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "guest_select_answers", primary_key: "guest_id", force: :cascade do |t|
     t.string "question_1_select_mark"
     t.string "question_3_select_mark"
