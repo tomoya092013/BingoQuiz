@@ -41,7 +41,7 @@ const EditQuiz = () => {
         'Content-Type': 'application/json',
       },
     });
-    navigate('/');
+    navigate('/admin/quizList');
   };
 
   useEffect(() => {
@@ -77,7 +77,7 @@ const EditQuiz = () => {
             <Stack direction="row" justifyContent="center" alignItems="center">
               <CardHeader title="問題編集" pb="0px" />
               <Button>
-                <Link to="/">戻る</Link>
+                <Link to="/admin/quizList">戻る</Link>
               </Button>
             </Stack>
 

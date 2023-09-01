@@ -1,28 +1,17 @@
 import { useEffect } from 'react';
-import { useRecoilState, useResetRecoilState } from 'recoil';
+import { useRecoilState } from 'recoil';
 
-import { guestAnswerListState, guestInfoState } from '../../store';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { guestInfoState } from '../../store';
+import { Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import GuestQuizList from './GuestBingoSheet';
 import jwt_decode from 'jwt-decode';
 import { Guest } from '../../types';
+import LogoutButton from '../LogoutButton';
 
 const GuestPage = () => {
   const [guestInfo, setGuestInfo] = useRecoilState(guestInfoState);
-  const clearGuestInfo = useResetRecoilState(guestInfoState);
-  const clearGuestAnswerList = useResetRecoilState(guestAnswerListState);
   const navigate = useNavigate();
-
-  const logout = () => {
-    const confirm = window.confirm('ログアウトしますか？');
-    if (confirm) {
-      clearGuestInfo();
-      clearGuestAnswerList();
-      localStorage.removeItem('jwtToken');
-      navigate('/');
-    }
-  };
 
   useEffect(() => {
     if (localStorage['jwtToken']) {
@@ -40,7 +29,7 @@ const GuestPage = () => {
   if (!guestInfo) return <></>;
 
   return (
-    <Box bgcolor="#494949" color="#ffffff">
+    <>
       <Stack
         direction="row"
         justifyContent="space-around"
@@ -48,9 +37,7 @@ const GuestPage = () => {
         padding="20px"
       >
         {guestInfo.name} ID:{guestInfo.id}
-        <Button onClick={() => logout()} variant="contained">
-          ログアウト
-        </Button>
+        <LogoutButton />
       </Stack>
       <Stack
         justifyContent="center"
@@ -77,7 +64,7 @@ const GuestPage = () => {
         </Typography>
       </Stack>
       <GuestQuizList guestId={guestInfo.id} />
-    </Box>
+    </>
   );
 };
 

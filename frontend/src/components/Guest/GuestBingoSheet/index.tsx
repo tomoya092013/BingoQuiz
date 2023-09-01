@@ -26,6 +26,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [guestAnswerList, setGuestAnswerList] =
     useRecoilState(guestAnswerListState);
+  const [bingoCount, BingoCount] = useState(0);
 
   const onShuffleButton = (targetList: Quiz[]) => {
     const newQuizList = [...targetList];
@@ -72,11 +73,69 @@ const GuestBingoSheet = ({ guestId }: Props) => {
     return questionNumber;
   };
 
+  const updateShuffleQuiz = () => {
+    if (shuffleQuizList.length === 0) return;
+
+    const newShuffleQuizList = shuffleQuizList.map((shuffleQuiz) => ({
+      ...shuffleQuiz,
+      is_answer_opened: quizList[shuffleQuiz.id - 1].is_answer_opened,
+    }));
+    setShuffleQuizList(newShuffleQuizList);
+  };
+
+  const guestIsCollected = (quizNum: number) => {
+    if (!shuffleQuizList[quizNum]) return;
+    if (!shuffleQuizList[quizNum].is_answer_opened) return;
+    const quizId = shuffleQuizList[quizNum].id;
+    return (
+      shuffleQuizList[quizNum].correct_mark ===
+      (guestAnswerList[quizId as keyof GuestAnswer] as 'A' | 'B' | 'C')
+    );
+  };
+
+  const judgeBingo = () => {
+    let newBingoCount = 0;
+    if (guestIsCollected(0) && guestIsCollected(1) && guestIsCollected(2)) {
+      newBingoCount += 1;
+    }
+    if (guestIsCollected(3) && guestIsCollected(4) && guestIsCollected(5)) {
+      newBingoCount += 1;
+    }
+    if (guestIsCollected(6) && guestIsCollected(7) && guestIsCollected(8)) {
+      newBingoCount += 1;
+    }
+
+    if (guestIsCollected(0) && guestIsCollected(3) && guestIsCollected(6)) {
+      newBingoCount += 1;
+    }
+    if (guestIsCollected(1) && guestIsCollected(4) && guestIsCollected(7)) {
+      newBingoCount += 1;
+    }
+    if (guestIsCollected(2) && guestIsCollected(5) && guestIsCollected(8)) {
+      newBingoCount += 1;
+    }
+
+    if (guestIsCollected(0) && guestIsCollected(4) && guestIsCollected(8)) {
+      newBingoCount += 1;
+    }
+    if (guestIsCollected(2) && guestIsCollected(4) && guestIsCollected(6)) {
+      newBingoCount += 1;
+    }
+
+    BingoCount(newBingoCount);
+  };
+
   useEffect(() => {
     getQuizList();
     getGuestAnswer();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    judgeBingo();
+    updateShuffleQuiz();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [quizList]);
 
   return (
     <>
@@ -100,6 +159,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
             minHeight={'100vh'}
             width={'100%'}
           >
+            <Box>{bingoCount}</Box>
             <Stack
               justifyContent="center"
               alignItems="center"
@@ -138,35 +198,35 @@ const GuestBingoSheet = ({ guestId }: Props) => {
                 width={'100%'}
                 sx={{ position: 'absolute', top: '395px' }}
               >
-                <Box
+                <Stack
+                  alignItems="center"
+                  justifyContent="center"
                   sx={{
-                    width: '160px',
-                    height: '50px',
-                    fontSize: '24px',
-                    background: '#ff8b61',
-                    alignItems: 'center',
-                    color: '#FFF',
-                    fontWeight: 'bold',
-                    boxShadow: '7px 13px 7px 2px #9e4700',
-                    borderRadius: '40px',
-                    border: 'solid 2px #040404',
-                    display: 'flex',
-                    justifyContent: 'center',
-                  }}
-                  onClick={() => onShuffleButton(shuffleQuizList)}
-                >
-                  シャンブルズ
-                </Box>
-
-                <img
-                  src="/images/room.png"
-                  alt="room"
-                  style={{
-                    borderRadius: '10px',
-                    width: '120px',
+                    width: '250px',
                     height: '80px',
+                    backgroundImage: 'url("/images/room.png")',
+                    backgroundSize: 'cover',
                   }}
-                />
+                >
+                  <Box
+                    sx={{
+                      width: '160px',
+                      height: '50px',
+                      background: '#8861ff6b',
+                      alignItems: 'center',
+                      borderRadius: '40px',
+                      border: 'solid 2px #040404',
+                      display: 'flex',
+                      justifyContent: 'center',
+                      position: 'relative',
+                    }}
+                    onClick={() => onShuffleButton(shuffleQuizList)}
+                  >
+                    <Typography color="#FFF" fontWeight="bold" fontSize="24px">
+                      シャンブルズ
+                    </Typography>
+                  </Box>
+                </Stack>
               </Stack>
             </Stack>
 
