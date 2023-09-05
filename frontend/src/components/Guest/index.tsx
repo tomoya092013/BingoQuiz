@@ -48,19 +48,17 @@ const GuestPage = () => {
           variant="h4"
           sx={{
             fontWeight: 'bold',
-            textShadow: '0 0 15px #000000',
           }}
         >
-          みんなが知りたい
+          みんなが知りたい！
         </Typography>
         <Typography
           variant="h4"
           sx={{
             fontWeight: 'bold',
-            textShadow: '0 0 15px #000000',
           }}
         >
-          9個の謎
+          智也 と 実希 のこと
         </Typography>
       </Stack>
       <GuestQuizList guestId={guestInfo.id} />

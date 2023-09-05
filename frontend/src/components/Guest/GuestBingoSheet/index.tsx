@@ -7,6 +7,7 @@ import { fetchGuestAnswer } from '../../../hooks/fetchGuestAnswer';
 import { useRecoilState } from 'recoil';
 import { guestAnswerListState, quizListState } from '../../../store';
 import { createGuestAnswer } from '../../../hooks/createGuestAnswer';
+import Image from '../image';
 
 type Props = {
   guestId: number;
@@ -159,7 +160,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
             minHeight={'100vh'}
             width={'100%'}
           >
-            <Box>{bingoCount}</Box>
+            {bingoCount > 0 && <Image />}
             <Stack
               justifyContent="center"
               alignItems="center"
@@ -219,6 +220,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
                       display: 'flex',
                       justifyContent: 'center',
                       position: 'relative',
+                      cursor: 'pointer',
                     }}
                     onClick={() => onShuffleButton(shuffleQuizList)}
                   >

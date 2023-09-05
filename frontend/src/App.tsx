@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import './App.css';
 
 // import Answers from './components/Admin/Answer';
 import EditQuiz from './components/Admin/EditQuiz/index';
