@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Quiz } from '../../../types';
 import {
@@ -33,7 +33,7 @@ const EditQuiz = () => {
       correct_mark: selectRadio,
     };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const res = await fetch(`http://localhost:3000/quizzes/${id}`, {
+    await fetch(`http://localhost:3000/quizzes/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: {

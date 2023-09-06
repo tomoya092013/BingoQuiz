@@ -35,10 +35,6 @@ const CustomBox = styled(Box)({
 });
 
 const QuizList = () => {
-  useEffect(() => {
-    getQuizList();
-  }, []);
-
   const navigate = useNavigate();
   const [quizList, setQuizList] = useState<Quiz[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -68,6 +64,10 @@ const QuizList = () => {
       behavior: 'smooth',
     });
   };
+
+  useEffect(() => {
+    getQuizList();
+  }, []);
 
   return (
     <>
