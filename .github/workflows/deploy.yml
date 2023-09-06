@@ -1,5 +1,7 @@
 name: 'Deploy'
-working-directory: ./frontend
+defaults:
+  run:
+    working-directory: frontend
 
 on:
   push:
