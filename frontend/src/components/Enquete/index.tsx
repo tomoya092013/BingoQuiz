@@ -66,7 +66,7 @@ const Enquete = () => {
   const onClickSend = () => {
     if (!guestInfo) return;
     sendEnquete(guestInfo.id, enqueteValue);
-    navigate('/guest');
+    // navigate('/guest');
   };
 
   useEffect(() => {
@@ -120,7 +120,7 @@ const Enquete = () => {
                   <LogoutButton />
                 </Stack>
                 <Typography variant="body1">
-                  こっちだ！と思う方に 動かしてください！！
+                  こっちだ！と思う方の数を増やして！！
                 </Typography>
               </Stack>
               <Stack justifyContent="center" alignItems="center">
