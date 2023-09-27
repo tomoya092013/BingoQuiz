@@ -1,0 +1,19 @@
+version: '3.9'
+services:
+  rails:
+    build: .
+    container_name: rails
+    working_dir: /myapp
+    # command: bundle exec puma -C config/puma.rb -e production
+    volumes:
+      - .:/myapp
+      - public-data:/myapp/public
+      - tmp-data:/myapp/tmp
+      - log-data:/myapp/log
+      - /myapp/node_modules
+    user: root
+
+volumes:
+  public-data:
+  tmp-data:
+  log-data:
