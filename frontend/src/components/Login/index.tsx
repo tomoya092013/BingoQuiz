@@ -1,6 +1,7 @@
-import { Button, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+
+import { Button, Stack, TextField, Typography } from '@mui/material';
 
 const Login = () => {
   const [password, setPassword] = useState<string>('');
@@ -10,11 +11,17 @@ const Login = () => {
     const res = await fetch(`http://localhost:3000/login/${password}`);
     const jwtToken = await res.text();
     localStorage.setItem('jwtToken', jwtToken);
+
     if (jwtToken === ' ') {
       alert('違う！！');
       return;
     }
-    navigate('/enquete');
+
+    if (localStorage['afterSend']) {
+      navigate('/guest');
+    } else {
+      navigate('/enquete');
+    }
   };
 
   const onLoginButton = () => {
