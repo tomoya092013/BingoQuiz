@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 
-import { Box, Button, Grid, Stack, Typography, styled } from '@mui/material';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import { Box, Button, Grid, Stack, styled, Typography } from '@mui/material';
+
 import { Quiz } from '../../../types';
 import Answers from '../Answer';
 
@@ -119,15 +120,25 @@ const QuizList = () => {
                 marginTop={2}
               >
                 {quizList.map((quiz) => (
-                  <Grid key={quiz.id} item xs={10} md={4}>
-                    <CustomBox onClick={() => navigateEditQuiz(quiz.id)}>
-                      <Typography
-                        variant="h6"
-                        gutterBottom
-                        sx={{ paddingLeft: 1 }}
+                  <Grid key={quiz.id} item xs={12} md={4}>
+                    <CustomBox
+                      onClick={() => navigateEditQuiz(quiz.id)}
+                      sx={{ paddingLeft: 2 }}
+                    >
+                      <Stack
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="flex-start"
                       >
-                        {quiz.question_title}
-                      </Typography>
+                        <Typography variant="h5">{quiz.id}.</Typography>
+                        <Typography
+                          variant="h6"
+                          gutterBottom
+                          sx={{ paddingLeft: 1 }}
+                        >
+                          {quiz.question_title}
+                        </Typography>
+                      </Stack>
                       <Typography variant="subtitle1" sx={{ paddingLeft: 2 }}>
                         A. {quiz.option_a}
                       </Typography>
