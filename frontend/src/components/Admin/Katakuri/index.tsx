@@ -12,6 +12,7 @@ const Katakuri = ({ katakuriText, handleInputChange, openKatakuri }: Props) => {
   return (
     <Stack direction="row" justifyContent="center">
       <Input
+        disableUnderline
         value={katakuriText}
         onChange={handleInputChange}
         sx={{ color: 'gray', fontSize: '4px' }}
