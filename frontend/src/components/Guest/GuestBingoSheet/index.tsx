@@ -1,13 +1,15 @@
 import { useEffect, useState } from 'react';
-import { Quiz, GuestAnswer } from '../../../types';
-import { Box, Grid, Stack, Typography, styled } from '@mui/material';
-import SquareQuiz from './SquareQuiz';
-import { fetchQuizList } from '../../../hooks/fetchQuizList';
-import { fetchGuestAnswer } from '../../../hooks/fetchGuestAnswer';
 import { useRecoilState } from 'recoil';
-import { guestAnswerListState, quizListState } from '../../../store';
+
+import { Box, Grid, Stack, styled, Typography } from '@mui/material';
+
 import { createGuestAnswer } from '../../../hooks/createGuestAnswer';
+import { fetchGuestAnswer } from '../../../hooks/fetchGuestAnswer';
+import { fetchQuizList } from '../../../hooks/fetchQuizList';
+import { guestAnswerListState, quizListState } from '../../../store';
+import { GuestAnswer, Quiz } from '../../../types';
 import Image from '../image';
+import SquareQuiz from './SquareQuiz';
 
 type Props = {
   guestId: number;
@@ -231,7 +233,6 @@ const GuestBingoSheet = ({ guestId }: Props) => {
                 </Stack>
               </Stack>
             </Stack>
-
             <Typography variant="h6" sx={{ margin: '20px 0 10px 0' }}>
               問題一覧( ✌︎'ω')✌︎
             </Typography>
@@ -259,7 +260,6 @@ const GuestBingoSheet = ({ guestId }: Props) => {
                   >
                     {quiz.id}. {quiz.question_title}
                   </Typography>
-
                   <Stack direction="row" justifyContent="space-between">
                     {questionNumber(quiz.id) === 'A' ? (
                       <Stack direction="row">
@@ -285,7 +285,6 @@ const GuestBingoSheet = ({ guestId }: Props) => {
                         A. {quiz.option_a}
                       </CustomTypography>
                     )}
-
                     {questionNumber(quiz.id) === 'B' ? (
                       <Stack direction="row">
                         <Stack
@@ -310,7 +309,6 @@ const GuestBingoSheet = ({ guestId }: Props) => {
                         B. {quiz.option_b}
                       </CustomTypography>
                     )}
-
                     {questionNumber(quiz.id) === 'C' ? (
                       <Stack direction="row">
                         <Stack

@@ -1,11 +1,21 @@
-import { useEffect, useRef, useState } from 'react';
+import { SetStateAction, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
-import { Box, Button, Grid, Stack, styled, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogContent,
+  Grid,
+  Stack,
+  styled,
+  Typography,
+} from '@mui/material';
 
 import { Quiz } from '../../../types';
 import Answers from '../Answer';
+import Katakuri from '../Katakuri';
 
 const AnswerButton = styled(Button)({
   width: '150px',
@@ -41,6 +51,25 @@ const QuizList = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const refTop = useRef<HTMLDivElement | null>(null);
   const refAnswer = useRef<HTMLDivElement | null>(null);
+  const [isKatakuri, setIsKatakuri] = useState<boolean>(false);
+  const [katakuriText, setKatakuriText] = useState('');
+  const [katakuriList, setKatakuriList] = useState<string[]>([]);
+
+  const KatakuriStack = styled(Stack)({
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: '110px',
+    width: '100px',
+    position: 'absolute',
+    top: '20px',
+  });
+
+  const KatakuriText = styled(Typography)({
+    fontSize: '24px',
+    writingMode: 'vertical-rl',
+    letterSpacing: '2px',
+    fontWeight: 'bold',
+  });
 
   const getQuizList = async () => {
     const res = await fetch('http://localhost:3000/quizzes');
@@ -64,6 +93,22 @@ const QuizList = () => {
     refTop?.current?.scrollIntoView({
       behavior: 'smooth',
     });
+  };
+
+  const openKatakuri = () => {
+    setKatakuriList(katakuriText.split(/\s/));
+    setIsKatakuri(true);
+  };
+
+  const handleInputChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setKatakuriText(e.target.value);
+  };
+
+  const closeKatakuri = () => {
+    setKatakuriText('');
+    setIsKatakuri(false);
   };
 
   useEffect(() => {
@@ -153,10 +198,35 @@ const QuizList = () => {
                 ))}
               </Grid>
             </Box>
+            <Stack width="100%" alignItems="flex-end">
+              <Katakuri
+                katakuriText={katakuriText}
+                handleInputChange={handleInputChange}
+                openKatakuri={openKatakuri}
+              />
+            </Stack>
           </Grid>
           <div ref={refAnswer}>
-            <Answers navigateTop={navigateTop} />
+            <Answers
+              navigateTop={navigateTop}
+              katakuriText={katakuriText}
+              handleInputChange={handleInputChange}
+              openKatakuri={openKatakuri}
+            />
           </div>
+          <Dialog open={isKatakuri} onClose={closeKatakuri}>
+            <DialogContent>
+              <Box padding="10px" sx={{ position: 'relative' }}>
+                <img src="/images/katakuri.png" width="350px" />
+                <KatakuriStack sx={{ left: '200px' }}>
+                  <KatakuriText>{katakuriList[0]}</KatakuriText>
+                </KatakuriStack>
+                <KatakuriStack sx={{ left: '30px' }}>
+                  <KatakuriText>{katakuriList[1]}</KatakuriText>
+                </KatakuriStack>
+              </Box>
+            </DialogContent>
+          </Dialog>
         </>
       )}
     </>

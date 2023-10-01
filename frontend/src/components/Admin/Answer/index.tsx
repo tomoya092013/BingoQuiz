@@ -1,13 +1,28 @@
-import { useEffect, useState } from 'react';
-import { Quiz } from '../../../types';
+import { SetStateAction, useEffect, useState } from 'react';
+
+import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
 // import { Link } from 'react-router-dom';
 import { Box, Button, Grid, Stack, Typography } from '@mui/material';
-import DirectionsBikeIcon from '@mui/icons-material/DirectionsBike';
-import AnswerModal from './modal';
-import { onClickGetPoke } from '../../../hooks/getPoke';
-import ClearOpenedAnswerDialog from '../Dialog';
 
-const Answers = ({ navigateTop }: { navigateTop: () => void }) => {
+import { onClickGetPoke } from '../../../hooks/getPoke';
+import { Quiz } from '../../../types';
+import ClearOpenedAnswerDialog from '../Dialog';
+import Katakuri from '../Katakuri';
+import AnswerModal from './modal';
+
+type Props = {
+  navigateTop: () => void;
+  katakuriText: string;
+  handleInputChange: (e: { target: { value: SetStateAction<string> } }) => void;
+  openKatakuri: () => void;
+};
+
+const Answers = ({
+  navigateTop,
+  katakuriText,
+  handleInputChange,
+  openKatakuri,
+}: Props) => {
   // const location = useLocation();
   const [quizList, setQuizList] = useState<Quiz[]>([]);
   const [isModal, setIsModal] = useState(false);
@@ -163,6 +178,13 @@ const Answers = ({ navigateTop }: { navigateTop: () => void }) => {
         quizId={quizId}
       />
       <ClearOpenedAnswerDialog getQuizList={getQuizList} />
+      <Stack alignItems="flex-end">
+        <Katakuri
+          katakuriText={katakuriText}
+          handleInputChange={handleInputChange}
+          openKatakuri={openKatakuri}
+        />
+      </Stack>
     </Box>
   );
 };
