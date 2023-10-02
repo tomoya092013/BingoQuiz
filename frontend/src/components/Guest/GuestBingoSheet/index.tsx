@@ -155,190 +155,187 @@ const GuestBingoSheet = ({ guestId }: Props) => {
           Loading...
         </Stack>
       ) : (
-        <>
+        <Stack
+          alignItems="center"
+          justifyContent="center"
+          minHeight={'100vh'}
+          width={'100%'}
+        >
+          {bingoCount > 0 && <Image />}
           <Stack
-            alignItems="center"
             justifyContent="center"
-            minHeight={'100vh'}
-            width={'100%'}
+            alignItems="center"
+            sx={{ position: 'relative', margin: '10px 0' }}
           >
-            {bingoCount > 0 && <Image />}
-            <Stack
+            <img
+              src="/images/bingoSheet.jpg"
+              alt="bingoSheet"
+              width={350}
+              height={500}
+            />
+            <Grid
+              container
+              direction="row"
               justifyContent="center"
               alignItems="center"
-              sx={{ position: 'relative', margin: '10px 0' }}
+              sx={{
+                minWidth: '290px',
+                minHeight: '290px',
+                padding: '20px',
+                position: 'absolute',
+                top: '105px',
+              }}
             >
-              <img
-                src="/images/bingoSheet.jpg"
-                alt="bingoSheet"
-                width={350}
-                height={500}
-              />
-              <Grid
-                container
-                direction="row"
-                justifyContent="center"
+              {shuffleQuizList.map((quiz) => (
+                <Grid key={quiz.id} item xs={4}>
+                  <SquareQuiz quiz={quiz} guestId={guestId} />
+                </Grid>
+              ))}
+            </Grid>
+            <Stack
+              direction="row"
+              justifyContent="space-evenly"
+              alignItems="center"
+              width={'100%'}
+              sx={{ position: 'absolute', top: '395px' }}
+            >
+              <Stack
                 alignItems="center"
+                justifyContent="center"
                 sx={{
-                  minWidth: '290px',
-                  minHeight: '290px',
-                  padding: '20px',
-                  position: 'absolute',
-                  top: '105px',
+                  width: '250px',
+                  height: '80px',
+                  backgroundImage: 'url("/images/room.png")',
+                  backgroundSize: 'cover',
                 }}
               >
-                {shuffleQuizList.map((quiz) => (
-                  <Grid key={quiz.id} item xs={4}>
-                    <SquareQuiz quiz={quiz} guestId={guestId} />
-                  </Grid>
-                ))}
-              </Grid>
-
-              <Stack
-                direction="row"
-                justifyContent="space-evenly"
-                alignItems="center"
-                width={'100%'}
-                sx={{ position: 'absolute', top: '395px' }}
-              >
-                <Stack
-                  alignItems="center"
-                  justifyContent="center"
+                <Box
                   sx={{
-                    width: '250px',
-                    height: '80px',
-                    backgroundImage: 'url("/images/room.png")',
-                    backgroundSize: 'cover',
+                    width: '160px',
+                    height: '50px',
+                    background: '#8861ff6b',
+                    alignItems: 'center',
+                    borderRadius: '40px',
+                    border: 'solid 2px #040404',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    cursor: 'pointer',
                   }}
+                  onClick={() => onShuffleButton(shuffleQuizList)}
                 >
-                  <Box
-                    sx={{
-                      width: '160px',
-                      height: '50px',
-                      background: '#8861ff6b',
-                      alignItems: 'center',
-                      borderRadius: '40px',
-                      border: 'solid 2px #040404',
-                      display: 'flex',
-                      justifyContent: 'center',
-                      position: 'relative',
-                      cursor: 'pointer',
-                    }}
-                    onClick={() => onShuffleButton(shuffleQuizList)}
-                  >
-                    <Typography color="#FFF" fontWeight="bold" fontSize="24px">
-                      シャンブルズ
-                    </Typography>
-                  </Box>
+                  <Typography color="#FFF" fontWeight="bold" fontSize="24px">
+                    シャンブルズ
+                  </Typography>
+                </Box>
+              </Stack>
+            </Stack>
+          </Stack>
+          <Typography variant="h6" sx={{ margin: '20px 0 10px 0' }}>
+            問題一覧( ✌︎'ω')✌︎
+          </Typography>
+          {quizList.map((quiz) => (
+            <Stack
+              key={quiz.id}
+              alignItems="center"
+              justifyContent="flex-start"
+              sx={{ margin: '5px' }}
+            >
+              <Stack
+                justifyContent="center"
+                sx={{
+                  width: '330px',
+                  padding: '2px 6px',
+                  background: '#fff0cd',
+                  boxShadow: '0px 0px 0px 3px #fff0cd',
+                  border: 'dashed 2px black',
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  gutterBottom
+                  sx={{ paddingLeft: 1, color: '#001692' }}
+                >
+                  {quiz.id}. {quiz.question_title}
+                </Typography>
+                <Stack direction="row" justifyContent="space-between">
+                  {questionNumber(quiz.id) === 'A' ? (
+                    <Stack direction="row">
+                      <Stack
+                        justifyContent="center"
+                        alignItems="center"
+                        minWidth="20px"
+                        lineHeight="20px"
+                        sx={{
+                          borderRadius: '50%',
+                          border: '2px solid #f10',
+                          color: 'black',
+                        }}
+                      >
+                        A
+                      </Stack>
+                      <CustomTypography variant="subtitle1">
+                        .{quiz.option_a}
+                      </CustomTypography>
+                    </Stack>
+                  ) : (
+                    <CustomTypography variant="subtitle1">
+                      A. {quiz.option_a}
+                    </CustomTypography>
+                  )}
+                  {questionNumber(quiz.id) === 'B' ? (
+                    <Stack direction="row">
+                      <Stack
+                        justifyContent="center"
+                        alignItems="center"
+                        minWidth="20px"
+                        lineHeight="20px"
+                        sx={{
+                          borderRadius: '50%',
+                          border: '2px solid #f10',
+                          color: 'black',
+                        }}
+                      >
+                        B
+                      </Stack>
+                      <CustomTypography variant="subtitle1">
+                        .{quiz.option_b}
+                      </CustomTypography>
+                    </Stack>
+                  ) : (
+                    <CustomTypography variant="subtitle1">
+                      B. {quiz.option_b}
+                    </CustomTypography>
+                  )}
+                  {questionNumber(quiz.id) === 'C' ? (
+                    <Stack direction="row">
+                      <Stack
+                        justifyContent="center"
+                        alignItems="center"
+                        minWidth="20px"
+                        lineHeight="20px"
+                        sx={{
+                          borderRadius: '50%',
+                          border: '2px solid #f10',
+                          color: 'black',
+                        }}
+                      >
+                        C
+                      </Stack>
+                      <CustomTypography variant="subtitle1">
+                        .{quiz.option_c}
+                      </CustomTypography>
+                    </Stack>
+                  ) : (
+                    <CustomTypography variant="subtitle1">
+                      C. {quiz.option_c}
+                    </CustomTypography>
+                  )}
                 </Stack>
               </Stack>
             </Stack>
-            <Typography variant="h6" sx={{ margin: '20px 0 10px 0' }}>
-              問題一覧( ✌︎'ω')✌︎
-            </Typography>
-            {quizList.map((quiz) => (
-              <Stack
-                key={quiz.id}
-                alignItems="center"
-                justifyContent="flex-start"
-                sx={{ margin: '5px' }}
-              >
-                <Stack
-                  justifyContent="center"
-                  sx={{
-                    width: '330px',
-                    padding: '2px 6px',
-                    background: '#fff0cd',
-                    boxShadow: '0px 0px 0px 3px #fff0cd',
-                    border: 'dashed 2px black',
-                  }}
-                >
-                  <Typography
-                    variant="h5"
-                    gutterBottom
-                    sx={{ paddingLeft: 1, color: '#001692' }}
-                  >
-                    {quiz.id}. {quiz.question_title}
-                  </Typography>
-                  <Stack direction="row" justifyContent="space-between">
-                    {questionNumber(quiz.id) === 'A' ? (
-                      <Stack direction="row">
-                        <Stack
-                          justifyContent="center"
-                          alignItems="center"
-                          minWidth="20px"
-                          lineHeight="20px"
-                          sx={{
-                            borderRadius: '50%',
-                            border: '2px solid #f10',
-                            color: 'black',
-                          }}
-                        >
-                          A
-                        </Stack>
-                        <CustomTypography variant="subtitle1">
-                          .{quiz.option_a}
-                        </CustomTypography>
-                      </Stack>
-                    ) : (
-                      <CustomTypography variant="subtitle1">
-                        A. {quiz.option_a}
-                      </CustomTypography>
-                    )}
-                    {questionNumber(quiz.id) === 'B' ? (
-                      <Stack direction="row">
-                        <Stack
-                          justifyContent="center"
-                          alignItems="center"
-                          minWidth="20px"
-                          lineHeight="20px"
-                          sx={{
-                            borderRadius: '50%',
-                            border: '2px solid #f10',
-                            color: 'black',
-                          }}
-                        >
-                          B
-                        </Stack>
-                        <CustomTypography variant="subtitle1">
-                          .{quiz.option_b}
-                        </CustomTypography>
-                      </Stack>
-                    ) : (
-                      <CustomTypography variant="subtitle1">
-                        B. {quiz.option_b}
-                      </CustomTypography>
-                    )}
-                    {questionNumber(quiz.id) === 'C' ? (
-                      <Stack direction="row">
-                        <Stack
-                          justifyContent="center"
-                          alignItems="center"
-                          minWidth="20px"
-                          lineHeight="20px"
-                          sx={{
-                            borderRadius: '50%',
-                            border: '2px solid #f10',
-                            color: 'black',
-                          }}
-                        >
-                          C
-                        </Stack>
-                        <CustomTypography variant="subtitle1">
-                          .{quiz.option_c}
-                        </CustomTypography>
-                      </Stack>
-                    ) : (
-                      <CustomTypography variant="subtitle1">
-                        C. {quiz.option_c}
-                      </CustomTypography>
-                    )}
-                  </Stack>
-                </Stack>
-              </Stack>
-            ))}
-          </Stack>
-        </>
+          ))}
+        </Stack>
       )}
     </>
   );

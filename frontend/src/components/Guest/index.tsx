@@ -1,13 +1,15 @@
+import jwt_decode from 'jwt-decode';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
+import { Box, Stack, Typography } from '@mui/material';
+
 import { guestInfoState } from '../../store';
-import { Stack, Typography } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
-import GuestQuizList from './GuestBingoSheet';
-import jwt_decode from 'jwt-decode';
 import { Guest } from '../../types';
 import LogoutButton from '../LogoutButton';
+import Dog from './DogsKatakuriSpeak';
+import GuestQuizList from './GuestBingoSheet';
 
 const GuestPage = () => {
   const [guestInfo, setGuestInfo] = useRecoilState(guestInfoState);
@@ -29,7 +31,7 @@ const GuestPage = () => {
   if (!guestInfo) return <></>;
 
   return (
-    <>
+    <Box sx={{ gap: '10px' }}>
       <Stack
         direction="row"
         justifyContent="space-around"
@@ -62,7 +64,8 @@ const GuestPage = () => {
         </Typography>
       </Stack>
       <GuestQuizList guestId={guestInfo.id} />
-    </>
+      <Dog />
+    </Box>
   );
 };
 
