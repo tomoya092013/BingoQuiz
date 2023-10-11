@@ -79,7 +79,7 @@ const Enquete = () => {
   const onClickSend = () => {
     if (!guestInfo) return;
     sendEnquete(guestInfo.id, enqueteValue);
-    localStorage.setItem('afterSend', guestInfo.id.toString());
+    // localStorage.setItem('afterSend', guestInfo.id.toString());
     navigate('/guest');
   };
 

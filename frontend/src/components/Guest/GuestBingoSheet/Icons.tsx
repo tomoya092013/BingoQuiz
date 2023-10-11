@@ -1,4 +1,6 @@
-export const TEO = '/public/images/teo.png';
-export const JIN = '/public/images/jin.png';
-export const YAKUMO = '/public/images/yakumo.png';
-export const KATAKURI = '/public/images/katakuri.png';
+export const TEO = new URL('/public/images/teo.png', import.meta.url).href;
+export const JIN = new URL('/public/images/jin.png', import.meta.url).href;
+export const YAKUMO = new URL('/public/images/yakumo.png', import.meta.url)
+  .href;
+export const KATAKURI = new URL('/public/images/katakuri.png', import.meta.url)
+  .href;

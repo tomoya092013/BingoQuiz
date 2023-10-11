@@ -64,7 +64,6 @@ const GuestPage = () => {
         sx={{ padding: '20px 5px' }}
       >
         <StyledTypography>みんなが知りたい！</StyledTypography>
-
         <Stack direction="row">
           <StyledTypography color="#03a9f4">智也</StyledTypography>
           <StyledTypography>と</StyledTypography>

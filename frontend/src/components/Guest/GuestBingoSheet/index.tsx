@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { Box, Grid, Stack, styled, Typography } from '@mui/material';
+import { Box, Button, Grid, Stack, styled, Typography } from '@mui/material';
 
 import { createGuestAnswer } from '../../../hooks/createGuestAnswer';
 import { fetchGuestAnswer } from '../../../hooks/fetchGuestAnswer';
@@ -140,6 +140,11 @@ const GuestBingoSheet = ({ guestId }: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quizList]);
 
+  const update = () => {
+    getQuizList();
+    getGuestAnswer();
+  };
+
   return (
     <>
       {isLoading === true ? (
@@ -167,6 +172,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
             alignItems="center"
             sx={{ position: 'relative', margin: '10px 0' }}
           >
+            <Button onClick={update}>更新</Button>
             <img
               src="/images/bingoSheet.jpg"
               alt="bingoSheet"
