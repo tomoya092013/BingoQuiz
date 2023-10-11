@@ -1,43 +1,102 @@
-import { Stack } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 
-import DogsSpeak from './Dogs';
-import KatakuriSpeak from './Katakuri';
+import { StyledTypography } from '../';
+import { JIN, KATAKURI, TEO, YAKUMO } from '../GuestBingoSheet/Icons';
+import LeftSpeak from './LeftSpeak';
+import RightSpeak from './RightSpeak';
 
-const DogsKatakuriSpeak = () => {
+type Props = {
+  ScrollTop: () => void;
+};
+
+const DogsKatakuriSpeak = ({ ScrollTop }: Props) => {
   return (
     <Stack
       maxWidth="800px"
       sx={{ backgroundColor: '#d6eeff' }}
-      padding="20px 0"
+      marginTop="20px"
+      padding="40px 0"
     >
-      <KatakuriSpeak
-        speak={'おい、いぬ。お前は2人が幸せになると思うか？'}
+      <Stack
+        direction="row"
+        justifyContent="center"
+        alignContent="center"
+        width="100%"
+      >
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignContent="center"
+          width="80%"
+          sx={{
+            backgroundColor: 'pink',
+            borderRadius: '20px',
+            padding: '10px',
+            marginBottom: '20px',
+          }}
+        >
+          <StyledTypography>犬とカタクリの会話</StyledTypography>
+        </Stack>
+      </Stack>
+      <RightSpeak
+        name={'カタクリ'}
+        speak={'おい、いぬ。説明しろ。'}
+        icon={KATAKURI}
         time={'12:20'}
+        kidoku={'既読3'}
       />
-      <DogsSpeak
+      <LeftSpeak
         name="テオ"
-        speak={'あお〜ん！！'}
-        icon={'/public/images/teo.png'}
+        speak={'ビンゴシートのマスを押せば問題がでてきます！'}
+        icons={[TEO]}
         time={'12:23'}
       />
-      <KatakuriSpeak speak={'お前もそう思うか？'} time={'12:24'} />
-      <DogsSpeak
-        name="ジン"
-        speak={'わんわん！わお〜ん！！'}
-        icon={'/public/images/jin.png'}
+      <LeftSpeak
+        name={'ジン'}
+        speak={'シャンブルズを押すとビンゴシートがシャッフルします'}
+        icons={[JIN]}
+        time={'12:24'}
+      />
+      <LeftSpeak
+        name="やくも"
+        speak={'外れるとマスがグレーになります。正解するとズドｵンてなります。'}
+        icons={[YAKUMO]}
         time={'12:28'}
       />
-      <KatakuriSpeak speak={'ま、まさかお前も！？。。。'} time={'12:29'} />
-      <DogsSpeak
-        name="やくも"
-        speak={'みきちゃん大好き！'}
-        icon={'/public/images/yakumo.png'}
-        time={'12:45'}
+      <RightSpeak
+        name={'カタクリ'}
+        speak={'お前らは、2人がどんな夫婦になると思う？'}
+        icon={KATAKURI}
+        time={'13:22'}
+        kidoku={'既読3'}
       />
-      <KatakuriSpeak
-        speak={'ふっ...。ずいぶん未来をみていやがる...'}
-        time={'12:46'}
+      <LeftSpeak
+        name="テオ ジン やくも"
+        speak={
+          'ずっとニコニコ仲良しに決まっているワン！でもみんなと遊びたがりの2人なので、みんなこれからも2人と遊んであげて下さいワン！そしたらもっとニコニコ楽しいワン！！'
+        }
+        icons={[TEO, JIN, YAKUMO]}
+        time={'13:25'}
+        sx={{ margin: '30px 10px' }}
       />
+      <RightSpeak
+        name={'カタクリ'}
+        speak={'ふっ...。ずいぶん未来を見てやがる...'}
+        icon={KATAKURI}
+        time={'23:45'}
+        kidoku={'既読3'}
+      />
+      <RightSpeak
+        name={'カタクリ'}
+        speak={'これ押すとビンゴシートに戻れる...'}
+        icon={KATAKURI}
+        time={'23:45'}
+        kidoku={'既読3'}
+      >
+        <Button variant="contained" onClick={ScrollTop} sx={{ margin: '10px' }}>
+          ボタン
+        </Button>
+      </RightSpeak>
     </Stack>
   );
 };

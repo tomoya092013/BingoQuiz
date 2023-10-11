@@ -62,7 +62,7 @@ const Login = () => {
           入力してください
         </Typography>
         <Typography variant="subtitle1">
-          入力したらピッピを押してくださいいいい
+          入力したらピッピを押してください
         </Typography>
       </Stack>
       <Stack

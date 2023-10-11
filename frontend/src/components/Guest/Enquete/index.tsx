@@ -15,10 +15,10 @@ import {
   Typography,
 } from '@mui/material';
 
-import { sendEnquete } from '../../hooks/sendEnquete';
-import { guestInfoState } from '../../store';
-import { EnqueteTotal, Guest } from '../../types';
-import LogoutButton from '../LogoutButton';
+import { sendEnquete } from '../../../hooks/sendEnquete';
+import { guestInfoState } from '../../../store';
+import { EnqueteTotal, Guest } from '../../../types';
+import LogoutButton from '../../LogoutButton';
 
 const VerticalTypography = styled(Typography)({
   writingMode: 'vertical-lr',
@@ -80,7 +80,7 @@ const Enquete = () => {
     if (!guestInfo) return;
     sendEnquete(guestInfo.id, enqueteValue);
     localStorage.setItem('afterSend', guestInfo.id.toString());
-    navigate('/loading');
+    navigate('/guest');
   };
 
   const handleOpen = () => {

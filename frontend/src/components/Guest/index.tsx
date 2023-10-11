@@ -1,19 +1,35 @@
 import jwt_decode from 'jwt-decode';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, styled, Typography } from '@mui/material';
 
 import { guestInfoState } from '../../store';
 import { Guest } from '../../types';
 import LogoutButton from '../LogoutButton';
-import Dog from './DogsKatakuriSpeak';
+import DogsKatakuriSpeak from './DogsKatakuriSpeak';
 import GuestQuizList from './GuestBingoSheet';
+
+export const StyledTypography = styled(Typography)({
+  fontSize: '28px',
+  fontWeight: 'bold',
+});
 
 const GuestPage = () => {
   const [guestInfo, setGuestInfo] = useRecoilState(guestInfoState);
   const navigate = useNavigate();
+
+  const scrollToDescription = useRef<HTMLDivElement | null>(null);
+  const scrollToTop = useRef<HTMLDivElement | null>(null);
+
+  const ScrollDescription = () => {
+    scrollToDescription?.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const ScrollTop = () => {
+    scrollToTop?.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
   useEffect(() => {
     if (localStorage['jwtToken']) {
@@ -37,6 +53,7 @@ const GuestPage = () => {
         justifyContent="space-around"
         alignItems="center"
         padding="20px"
+        ref={scrollToTop}
       >
         {guestInfo.name} ID:{guestInfo.id}
         <LogoutButton />
@@ -46,25 +63,30 @@ const GuestPage = () => {
         alignItems="center"
         sx={{ padding: '20px 5px' }}
       >
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: 'bold',
-          }}
+        <StyledTypography>みんなが知りたい！</StyledTypography>
+
+        <Stack direction="row">
+          <StyledTypography color="#03a9f4">智也</StyledTypography>
+          <StyledTypography>と</StyledTypography>
+          <StyledTypography color="#ff6798">実希</StyledTypography>
+          <StyledTypography>のこと！</StyledTypography>
+        </Stack>
+        <Button
+          variant="contained"
+          onClick={ScrollDescription}
+          sx={{ marginTop: '15px' }}
         >
-          みんなが知りたい！
-        </Typography>
-        <Typography
-          variant="h4"
-          sx={{
-            fontWeight: 'bold',
-          }}
-        >
-          智也 と 実希 のこと
-        </Typography>
+          ここを押して！
+        </Button>
       </Stack>
       <GuestQuizList guestId={guestInfo.id} />
-      <Dog />
+      <Stack
+        ref={scrollToDescription}
+        justifyContent="center"
+        alignItems="center"
+      >
+        <DogsKatakuriSpeak ScrollTop={ScrollTop} />
+      </Stack>
     </Box>
   );
 };
