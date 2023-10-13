@@ -73,9 +73,13 @@ const GuestPage = () => {
         <Button
           variant="contained"
           onClick={ScrollDescription}
-          sx={{ marginTop: '15px' }}
+          sx={{
+            marginTop: '15px',
+            border: '2px solid black',
+            boxShadow: '10px 10px 5px #777777',
+          }}
         >
-          ここを押して！
+          説明はここ
         </Button>
       </Stack>
       <GuestQuizList guestId={guestInfo.id} />

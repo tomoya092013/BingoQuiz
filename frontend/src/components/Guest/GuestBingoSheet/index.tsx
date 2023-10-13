@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRecoilState } from 'recoil';
 
-import { Box, Button, Grid, Stack, styled, Typography } from '@mui/material';
+import { Button, Grid, Stack, styled, Typography } from '@mui/material';
 
 import { createGuestAnswer } from '../../../hooks/createGuestAnswer';
 import { fetchGuestAnswer } from '../../../hooks/fetchGuestAnswer';
@@ -30,6 +30,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
   const [guestAnswerList, setGuestAnswerList] =
     useRecoilState(guestAnswerListState);
   const [bingoCount, BingoCount] = useState(0);
+  const [shuffleDisabled, setShuffleDisabled] = useState(false);
 
   const onShuffleButton = (targetList: Quiz[]) => {
     const newQuizList = [...targetList];
@@ -137,12 +138,21 @@ const GuestBingoSheet = ({ guestId }: Props) => {
   useEffect(() => {
     judgeBingo();
     updateShuffleQuiz();
+    shuffleButtonDisabled();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quizList]);
 
   const update = () => {
     getQuizList();
     getGuestAnswer();
+  };
+
+  console.log('quizList', quizList);
+
+  const shuffleButtonDisabled = () => {
+    const isAnswerOpened =
+      quizList.filter((quiz) => quiz.is_answer_opened).length > 0;
+    setShuffleDisabled(isAnswerOpened);
   };
 
   return (
@@ -172,7 +182,27 @@ const GuestBingoSheet = ({ guestId }: Props) => {
             alignItems="center"
             sx={{ position: 'relative', margin: '10px 0' }}
           >
-            <Button onClick={update}>更新</Button>
+            <Button
+              onClick={update}
+              variant="contained"
+              sx={{
+                position: 'absolute',
+                top: '20px',
+                left: '280px',
+                borderRadius: '50%',
+                width: '50px',
+                height: '50px',
+              }}
+              style={{
+                backgroundColor: '#0027ff',
+                color: 'white',
+                border: '2px solid black',
+                padding: '0px',
+                minWidth: '50px',
+              }}
+            >
+              更新
+            </Button>
             <img
               src="/images/bingoSheet.jpg"
               alt="bingoSheet"
@@ -215,11 +245,11 @@ const GuestBingoSheet = ({ guestId }: Props) => {
                   backgroundSize: 'cover',
                 }}
               >
-                <Box
-                  sx={{
-                    width: '160px',
+                <Button
+                  style={{
+                    width: '170px',
                     height: '50px',
-                    background: '#8861ff6b',
+                    background: shuffleDisabled ? 'red' : '#8861ff6b',
                     alignItems: 'center',
                     borderRadius: '40px',
                     border: 'solid 2px #040404',
@@ -229,11 +259,12 @@ const GuestBingoSheet = ({ guestId }: Props) => {
                     cursor: 'pointer',
                   }}
                   onClick={() => onShuffleButton(shuffleQuizList)}
+                  disabled={shuffleDisabled}
                 >
                   <Typography color="#FFF" fontWeight="bold" fontSize="24px">
                     シャンブルズ
                   </Typography>
-                </Box>
+                </Button>
               </Stack>
             </Stack>
           </Stack>

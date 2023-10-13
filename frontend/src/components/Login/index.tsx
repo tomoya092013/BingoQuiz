@@ -1,7 +1,10 @@
+import jwt_decode from 'jwt-decode';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Button, Stack, TextField, Typography } from '@mui/material';
+
+import { Guest } from '../../types';
 
 const Login = () => {
   const [password, setPassword] = useState<string>('');
@@ -17,7 +20,10 @@ const Login = () => {
       return;
     }
 
-    if (localStorage['afterSend']) {
+    const guestId = localStorage.getItem('afterSend');
+    const guestInfo: Guest = jwt_decode(jwtToken);
+
+    if (guestId === guestInfo.id.toString()) {
       navigate('/guest');
     } else {
       navigate('/enquete');
