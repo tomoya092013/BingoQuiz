@@ -22,6 +22,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_27_150835) do
   end
 
   create_table "guest_select_answers", primary_key: "guest_id", force: :cascade do |t|
+    t.string "guest_name"
     t.string "question_1_select_mark"
     t.string "question_3_select_mark"
     t.string "question_4_select_mark"
@@ -31,6 +32,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_27_150835) do
     t.string "question_7_select_mark"
     t.string "question_8_select_mark"
     t.string "question_9_select_mark"
+    t.boolean "bingo", default: false
+    t.integer "correct_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

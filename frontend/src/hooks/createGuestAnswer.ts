@@ -1,6 +1,7 @@
-export const createGuestAnswer = async (guestId: number) => {
+export const createGuestAnswer = async (guestId: number, guestName: string) => {
   const data = {
     guest_id: guestId,
+    guest_name: guestName,
     question_1_select_mark: '',
     question_2_select_mark: '',
     question_3_select_mark: '',

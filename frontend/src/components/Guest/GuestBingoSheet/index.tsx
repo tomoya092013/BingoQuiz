@@ -6,6 +6,7 @@ import { Button, Grid, Stack, styled, Typography } from '@mui/material';
 import { createGuestAnswer } from '../../../hooks/createGuestAnswer';
 import { fetchGuestAnswer } from '../../../hooks/fetchGuestAnswer';
 import { fetchQuizList } from '../../../hooks/fetchQuizList';
+import { updateCorrectCount } from '../../../hooks/updateCorrectCount';
 import { guestAnswerListState, quizListState } from '../../../store';
 import { GuestAnswer, Quiz } from '../../../types';
 import Image from '../image';
@@ -13,6 +14,7 @@ import SquareQuiz from './SquareQuiz';
 
 type Props = {
   guestId: number;
+  guestName: string;
 };
 
 const CustomTypography = styled(Typography)({
@@ -23,13 +25,13 @@ const CustomTypography = styled(Typography)({
   color: 'black',
 });
 
-const GuestBingoSheet = ({ guestId }: Props) => {
+const GuestBingoSheet = ({ guestId, guestName }: Props) => {
   const [quizList, setQuizList] = useRecoilState(quizListState);
   const [shuffleQuizList, setShuffleQuizList] = useState<Quiz[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [guestAnswerList, setGuestAnswerList] =
     useRecoilState(guestAnswerListState);
-  const [bingoCount, BingoCount] = useState(0);
+  const [bingo, setBingo] = useState(false);
   const [shuffleDisabled, setShuffleDisabled] = useState(false);
 
   const onShuffleButton = (targetList: Quiz[]) => {
@@ -52,10 +54,11 @@ const GuestBingoSheet = ({ guestId }: Props) => {
   const getGuestAnswer = async () => {
     const res = await fetchGuestAnswer(guestId);
     if (res === undefined) {
-      await createGuestAnswer(guestId);
+      await createGuestAnswer(guestId, guestName);
     }
     const data: GuestAnswer = {
-      guestId: guestId,
+      guest_id: guestId,
+      guest_name: guestName,
       1: res.question_1_select_mark,
       2: res.question_2_select_mark,
       3: res.question_3_select_mark,
@@ -65,7 +68,9 @@ const GuestBingoSheet = ({ guestId }: Props) => {
       7: res.question_7_select_mark,
       8: res.question_8_select_mark,
       9: res.question_9_select_mark,
+      correct_count: res.correct_count,
     };
+    console.log('data', data);
     setGuestAnswerList(data);
   };
 
@@ -126,7 +131,38 @@ const GuestBingoSheet = ({ guestId }: Props) => {
       newBingoCount += 1;
     }
 
-    BingoCount(newBingoCount);
+    const judgeBingo = newBingoCount > 0;
+    setBingo(judgeBingo);
+  };
+
+  const judgeCorrectCount = async () => {
+    const createCorrectCount = () => {
+      let newCorrectCount = 0;
+      quizList.forEach((quiz, quizIndex) => {
+        if (!quiz.is_answer_opened) return;
+
+        const quizNum = quizIndex + 1;
+        const isCorrect =
+          quiz.correct_mark === guestAnswerList[quizNum as keyof GuestAnswer];
+        if (isCorrect) {
+          newCorrectCount += 1;
+        }
+      });
+      return newCorrectCount;
+    };
+    const correctCount = await createCorrectCount();
+    updateCorrectCount(guestAnswerList.guest_id, bingo, correctCount);
+  };
+
+  const shuffleButtonDisabled = () => {
+    const isAnswerOpened =
+      quizList.filter((quiz) => quiz.is_answer_opened).length > 0;
+    setShuffleDisabled(isAnswerOpened);
+  };
+
+  const update = () => {
+    getQuizList();
+    getGuestAnswer();
   };
 
   useEffect(() => {
@@ -137,23 +173,11 @@ const GuestBingoSheet = ({ guestId }: Props) => {
 
   useEffect(() => {
     judgeBingo();
+    judgeCorrectCount();
     updateShuffleQuiz();
     shuffleButtonDisabled();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quizList]);
-
-  const update = () => {
-    getQuizList();
-    getGuestAnswer();
-  };
-
-  console.log('quizList', quizList);
-
-  const shuffleButtonDisabled = () => {
-    const isAnswerOpened =
-      quizList.filter((quiz) => quiz.is_answer_opened).length > 0;
-    setShuffleDisabled(isAnswerOpened);
-  };
 
   return (
     <>
@@ -176,7 +200,7 @@ const GuestBingoSheet = ({ guestId }: Props) => {
           minHeight={'100vh'}
           width={'100%'}
         >
-          {bingoCount > 0 && <Image />}
+          {bingo && <Image />}
           <Stack
             justifyContent="center"
             alignItems="center"

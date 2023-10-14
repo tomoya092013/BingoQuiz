@@ -82,7 +82,7 @@ const GuestPage = () => {
           説明はここ
         </Button>
       </Stack>
-      <GuestQuizList guestId={guestInfo.id} />
+      <GuestQuizList guestId={guestInfo.id} guestName={guestInfo.name} />
       <Stack
         ref={scrollToDescription}
         justifyContent="center"

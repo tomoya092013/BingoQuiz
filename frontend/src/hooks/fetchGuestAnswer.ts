@@ -9,6 +9,7 @@ type FetchGuestAnswer = {
   question_7_select_mark: string;
   question_8_select_mark: string;
   question_9_select_mark: string;
+  correct_count: number;
 };
 
 export const fetchGuestAnswer = async (

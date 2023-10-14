@@ -20,7 +20,8 @@ export type Guest = {
 };
 
 export type GuestAnswer = {
-  guestId: number;
+  guest_id: number;
+  guest_name: string;
   1: string;
   2: string;
   3: string;
@@ -30,6 +31,8 @@ export type GuestAnswer = {
   7: string;
   8: string;
   9: string;
+  bingo?: boolean;
+  correct_count?: number;
 };
 
 export type WsAdminAnswer = { quizId: number; answer: 'A' | 'B' | 'C' | '' };

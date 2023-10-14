@@ -2,6 +2,7 @@ class CreateGuestSelectAnswers < ActiveRecord::Migration[7.0]
   def change
     create_table :guest_select_answers,id: false do |t|
       t.integer :guest_id,primary_key: true
+      t.string :guest_name
       t.string :question_1_select_mark,null: true
       t.string :question_3_select_mark,null: true
       t.string :question_4_select_mark,null: true
@@ -11,6 +12,8 @@ class CreateGuestSelectAnswers < ActiveRecord::Migration[7.0]
       t.string :question_7_select_mark,null: true
       t.string :question_8_select_mark,null: true
       t.string :question_9_select_mark,null: true
+      t.boolean :bingo, default: false
+      t.integer :correct_count, null: true
 
       t.timestamps
     end
