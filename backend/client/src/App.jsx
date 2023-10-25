@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
-import "./App.css";
+import { useState, useEffect } from 'react';
+import './App.css';
 
-const ws = new WebSocket("ws://localhost:3000/cable");
+const ws = new WebSocket(`ws://${import.meta.env.VITE_API_URL}/cable`);
 
 function App() {
   const [messages, setMessages] = useState([]);
-  const [guid, setGuid] = useState("");
-  const messagesContainer = document.getElementById("messages");
+  const [guid, setGuid] = useState('');
+  const messagesContainer = document.getElementById('messages');
 
   ws.onopen = () => {
-    console.log("Connected to websocket server");
+    console.log('Connected to websocket server');
     setGuid(Math.random().toString(36).substring(2, 15));
 
     ws.send(
       JSON.stringify({
-        command: "subscribe",
+        command: 'subscribe',
         identifier: JSON.stringify({
           id: guid,
-          channel: "MessagesChannel",
+          channel: 'MessagesChannel',
         }),
       })
     );
@@ -25,9 +25,9 @@ function App() {
 
   ws.onmessage = (e) => {
     const data = JSON.parse(e.data);
-    if (data.type === "ping") return;
-    if (data.type === "welcome") return;
-    if (data.type === "confirm_subscription") return;
+    if (data.type === 'ping') return;
+    if (data.type === 'welcome') return;
+    if (data.type === 'confirm_subscription') return;
 
     const message = data.message;
     setMessagesAndScrollDown([...messages, message]);
@@ -44,19 +44,21 @@ function App() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const body = e.target.message.value;
-    e.target.message.value = "";
+    e.target.message.value = '';
 
-    await fetch("http://localhost:3000/messages", {
-      method: "POST",
+    await fetch(`https://${import.meta.env.VITE_API_URL}/messages`, {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ body }),
     });
   };
 
   const fetchMessages = async () => {
-    const response = await fetch("http://localhost:3000/messages");
+    const response = await fetch(
+      `https://${import.meta.env.VITE_API_URL}/messages`
+    );
     const data = await response.json();
     setMessagesAndScrollDown(data);
   };
