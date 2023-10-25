@@ -13,7 +13,7 @@ export const createGuestAnswer = async (guestId: number, guestName: string) => {
     question_9_select_mark: '',
   };
 
-  await fetch('http://localhost:3000/guest_select_answer', {
+  await fetch(`https://${import.meta.env.VITE_API_URL}/guest_select_answer`, {
     method: 'POST',
     body: JSON.stringify(data),
     headers: {

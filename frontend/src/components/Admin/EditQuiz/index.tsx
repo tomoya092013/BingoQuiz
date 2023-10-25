@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Quiz } from '../../../types';
+
 import {
   Box,
   Button,
@@ -13,6 +13,8 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+
+import { Quiz } from '../../../types';
 
 const EditQuiz = () => {
   const navigate = useNavigate();
@@ -33,7 +35,7 @@ const EditQuiz = () => {
       correct_mark: selectRadio,
     };
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    await fetch(`http://localhost:3000/quizzes/${id}`, {
+    await fetch(`https://${import.meta.env.VITE_API_URL}/quizzes/${id}`, {
       method: 'PUT',
       body: JSON.stringify(data),
       headers: {

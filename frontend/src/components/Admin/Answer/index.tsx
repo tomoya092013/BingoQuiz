@@ -33,7 +33,7 @@ const Answers = ({
   const [quizId, setQuizId] = useState<number>(0);
 
   const getQuizList = async () => {
-    const res = await fetch('http://localhost:3000/quizzes');
+    const res = await fetch(`https://${import.meta.env.VITE_API_URL}/quizzes`);
     const json: Quiz[] = await res.json();
     setQuizList(json);
     setIsLoading(false);

@@ -11,7 +11,9 @@ const Login = () => {
   const navigate = useNavigate();
 
   const guestLoginRequest = async () => {
-    const res = await fetch(`http://localhost:3000/login/${password}`);
+    const res = await fetch(
+      `https://${import.meta.env.VITE_API_URL}/login/${password}`
+    );
     const jwtToken = await res.text();
     localStorage.setItem('jwtToken', jwtToken);
 

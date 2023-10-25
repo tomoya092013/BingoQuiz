@@ -16,7 +16,9 @@ export const fetchGuestAnswer = async (
   guestId: number
 ): Promise<FetchGuestAnswer> => {
   const res = await fetch(
-    `http://localhost:3000/guest_select_answer/${guestId}`
+    `https://${
+      import.meta.env.VITE_API_URL
+    }/guest_select_answer/${guestId}`
   );
 
   const json = await res.json();

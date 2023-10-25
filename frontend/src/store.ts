@@ -1,8 +1,10 @@
 import { atom } from 'recoil';
-import { PokemonImage, GuestAnswer, Quiz, Guest } from './types';
+
+import { Guest, GuestAnswer, PokemonImage, Quiz } from './types';
 
 const defaultGuestAnswerListState = {
-  guestId: 0,
+  guest_id: 0,
+  guest_name: '',
   1: '',
   2: '',
   3: '',

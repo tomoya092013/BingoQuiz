@@ -21,9 +21,12 @@ const ClearOpenedAnswerDialog = ({
   };
 
   const clearAllOpenedAnswer = async () => {
-    await fetch('http://localhost:3000/quizzes/clear_all_opened_answer', {
-      method: 'POST',
-    });
+    await fetch(
+      `https://${import.meta.env.VITE_API_URL}/quizzes/clear_all_opened_answer`,
+      {
+        method: 'POST',
+      }
+    );
     getQuizList();
     setOpen(false);
   };

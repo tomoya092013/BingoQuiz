@@ -1,3 +1,6 @@
+import { useEffect, useState } from 'react';
+import { useRecoilState, useRecoilValue } from 'recoil';
+
 import {
   Box,
   Button,
@@ -6,11 +9,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { Quiz, GuestAnswer, Guest } from '../../../../types';
-import { useEffect, useState } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useRecoilState, useRecoilValue } from 'recoil';
+
 import { guestAnswerListState, guestInfoState } from '../../../../store';
+import { Guest, GuestAnswer, Quiz } from '../../../../types';
 
 type Props = {
   quiz: Quiz;
@@ -56,14 +58,17 @@ const ModalSquareQuiz = ({ quiz, isOpen, closeChoiceModal }: Props) => {
       [quizId]: selectAnswer,
     };
 
-    await fetch(`http://localhost:3000/guest_select_answer/${guest.id}`, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(data),
-    });
+    await fetch(
+      `https://${import.meta.env.VITE_API_URL}/guest_select_answer/${guest.id}`,
+      {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      }
+    );
     setGuestAnswerList({
       ...guestAnswerList,
       [quiz.id as keyof GuestAnswer]: selectAnswer,

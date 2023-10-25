@@ -11,7 +11,7 @@ export const sendEnquete = async (guestId: number, enquete: EnqueteTotal[]) => {
   };
 
   try {
-    await fetch(`http://localhost:3000/enquete/${guestId}`, {
+    await fetch(`https://${import.meta.env.VITE_API_URL}/enquete/${guestId}`, {
       method: 'POST',
       body: JSON.stringify(data),
       headers: {

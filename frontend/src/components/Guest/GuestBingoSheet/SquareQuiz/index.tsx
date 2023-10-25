@@ -1,10 +1,12 @@
-import { Avatar, Button, Stack, Typography } from '@mui/material';
-import { GuestAnswer, Quiz, WsAdminAnswer } from '../../../../types';
 import { useEffect, useState } from 'react';
-import ModalSquareQuiz from './modal';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { guestAnswerListState, quizListState } from '../../../../store';
+
+import { Avatar, Button, Stack, Typography } from '@mui/material';
+
 import { fetchQuizList } from '../../../../hooks/fetchQuizList';
+import { guestAnswerListState, quizListState } from '../../../../store';
+import { GuestAnswer, Quiz, WsAdminAnswer } from '../../../../types';
+import ModalSquareQuiz from './modal';
 
 type Props = {
   quiz: Quiz;
@@ -52,7 +54,7 @@ const SquareQuiz = ({ quiz, guestId }: Props) => {
     isSelectedAnswer(quiz.id);
     getQuizList();
 
-    const ws = new WebSocket('ws://localhost:3000/cable');
+    const ws = new WebSocket(`ws://${import.meta.env.VITE_API_URL}/cable`);
     ws.onopen = () => {
       console.log('Connected to websocket server');
       ws.send(

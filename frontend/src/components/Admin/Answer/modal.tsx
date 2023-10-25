@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Box, Button, Stack, Typography } from '@mui/material';
+
 import { keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
+import { Box, Button, Stack, Typography } from '@mui/material';
 
 const shakeAnimation = keyframes`
   0% {
@@ -89,14 +90,17 @@ const AnswerModal = ({
   const updateQuiz = async (id: number) => {
     try {
       const data = { is_answer_opened: true };
-      const res = await fetch(`http://localhost:3000/quizzes/${id}`, {
-        method: 'PUT',
-        body: JSON.stringify(data),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-        },
-      });
+      const res = await fetch(
+        `https://${import.meta.env.VITE_API_URL}/quizzes/${id}`,
+        {
+          method: 'PUT',
+          body: JSON.stringify(data),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+          },
+        }
+      );
       return res;
     } catch (error) {
       console.log(error);
@@ -106,7 +110,7 @@ const AnswerModal = ({
   const broadcast_answer = async (id: number, answer: string) => {
     const requestJson = JSON.stringify({ quizId: id, answer });
 
-    await fetch('http://localhost:3000/messages', {
+    await fetch(`https://${import.meta.env.VITE_API_URL}/messages`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
