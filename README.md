@@ -14,6 +14,7 @@ https://github.com/tomoya092013/BingoQuiz/assets/78564855/e41b69d5-d2a6-4263-a4f
 
 ## ゲスト画面  https://github.com/tomoya092013/BingoQuiz/issues/6
 ### 機能
+- スマホ画面に対応
 - #### アンケート機能
 - #### ビンゴシートシャッフル機能
 - #### クイズ解答機能  
